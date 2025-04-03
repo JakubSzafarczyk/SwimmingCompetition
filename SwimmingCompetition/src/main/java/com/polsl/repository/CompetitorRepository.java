@@ -6,5 +6,6 @@ import com.polsl.entity.Competitor;
 
 public interface CompetitorRepository extends CrudRepository<Competitor, Long>{
 	
+	List<Competitor> findBy
 
 }

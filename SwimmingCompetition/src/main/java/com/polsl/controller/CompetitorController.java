@@ -2,11 +2,7 @@ package com.polsl.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.bind.annotation.*;
 import com.polsl.entity.Competitor;
 import com.polsl.repository.CompetitorRepository;
 
@@ -22,4 +18,8 @@ public class CompetitorController {
 		competitor = competitorRepo.save(competitor);
 		return "Added with id=" + competitor.getCompetitorId();
 	}
+	@GetMapping("/get")
+	public @ResponseBody Iterable<Competitor> getCompetitor(@RequestParam String make) {
+	return competitorRepo.findByMake(make);
+	}}
 }
