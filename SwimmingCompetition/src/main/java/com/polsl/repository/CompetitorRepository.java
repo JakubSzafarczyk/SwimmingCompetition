@@ -1,5 +1,10 @@
 package com.polsl.repository;
 
-public interface CompetitorRepository {
+import org.springframework.data.repository.CrudRepository;
+
+import com.polsl.entity.Competitor;
+
+public interface CompetitorRepository extends CrudRepository<Competitor, Long>{
+	
 
 }
