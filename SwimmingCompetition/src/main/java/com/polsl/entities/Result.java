@@ -1,19 +1,24 @@
 package com.polsl.entities;
 
 
-import java.sql.Timestamp;
+import java.sql.Time;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
 @Setter
 @Entity
+@Table(name = "results")
 public class Result {
 	@Id
-	@GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "resultId")
 	private long resultId;
 	
+	@Column(name = "place")
 	private long place;
-	private Timestamp time;
+	
+	@Column(name = "resultTime")
+	private Time time;
 	
 }
