@@ -8,12 +8,11 @@ import lombok.*;
 @Setter
 @Entity
 public class Competition {
-
 	@Id
 	@GeneratedValue
 	private long competitionId;
 	
-	private long name;
+	private String name;
 	private Timestamp startDate;
 	private Timestamp endDate;
 	private String description;

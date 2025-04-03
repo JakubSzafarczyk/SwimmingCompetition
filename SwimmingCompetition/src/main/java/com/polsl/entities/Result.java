@@ -9,13 +9,11 @@ import lombok.*;
 @Setter
 @Entity
 public class Result {
-
 	@Id
 	@GeneratedValue
 	private long resultId;
 	
 	private long place;
 	private Timestamp time;
-	
 	
 }

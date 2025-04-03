@@ -9,8 +9,6 @@ import lombok.*;
 @Setter
 @Entity
 public class Coach {
-
-	
 	@Id
 	@GeneratedValue
 	private long coachID;
@@ -19,6 +17,9 @@ public class Coach {
 	private String  secondName;
 	private String  lastName;
 	private Date dateOfBirth;
+	
+	@Enumerated(EnumType.STRING)
 	private Gender gender;
+	
 	private String nationality;
 }

@@ -10,7 +10,6 @@ import com.polsl.model.RaceStyle;
 @Setter
 @Entity
 public class Race {
-
     @Id
     @GeneratedValue
     private Long raceId;
@@ -18,6 +17,6 @@ public class Race {
     @Enumerated(EnumType.STRING)
     private RaceStyle style;
 
-    private Integer distance;
+    private int distance;
     private Timestamp date;
 }

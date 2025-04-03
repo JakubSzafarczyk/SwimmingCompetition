@@ -7,12 +7,11 @@ import lombok.*;
 @Setter
 @Entity
 public class Location {
-
 	@Id
 	@GeneratedValue
 	private long locationId;
 	
-	private long name;
+	private String name;
 	private String adderss;
 	private int poolLength;
 	private int capacity;

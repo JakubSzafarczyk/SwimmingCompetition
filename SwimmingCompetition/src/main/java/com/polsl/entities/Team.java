@@ -7,7 +7,6 @@ import lombok.*;
 @Setter
 @Entity
 public class Team {
-	
 	@Id
     @GeneratedValue
     private Long teamId;

@@ -9,7 +9,6 @@ import lombok.*;
 @Setter
 @Entity
 public class Competitor {
-
 	@Id
 	@GeneratedValue
 	private long competitorId;
