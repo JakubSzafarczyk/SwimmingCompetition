@@ -19,7 +19,7 @@ public class CompetitorController {
 		return "Added with id=" + competitor.getCompetitorId();
 	}
 	@GetMapping("/get")
-	public @ResponseBody Iterable<Competitor> getCompetitor(@RequestParam String make) {
-	return competitorRepo.findByMake(make);
-	}}
+	public @ResponseBody Iterable<Competitor> getCompetitor(@RequestParam String lastName) {
+	return competitorRepo.findByLastName(lastName);
+	}
 }
