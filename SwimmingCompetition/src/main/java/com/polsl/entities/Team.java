@@ -10,7 +10,7 @@ import lombok.*;
 public class Team {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "teamId")
+    @Column(name = "teamId", nullable = false)
     private Long teamId;
 
 	@Column(name = "name", nullable = false, length = 100)

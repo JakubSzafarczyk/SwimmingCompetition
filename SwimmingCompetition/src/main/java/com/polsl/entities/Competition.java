@@ -11,7 +11,7 @@ import lombok.*;
 public class Competition {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "competitionId")
+    @Column(name = "competitionId", nullable = false)
 	private long competitionId;
 	
 	@Column(name = "name", nullable = false, length = 100)

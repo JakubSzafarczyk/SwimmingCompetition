@@ -12,13 +12,12 @@ import lombok.*;
 public class Result {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "resultId")
+    @Column(name = "resultId", nullable = false)
 	private long resultId;
 	
 	@Column(name = "place")
 	private long place;
 	
-	@Column(name = "resultTime")
+	@Column(name = "resultTime", nullable = false)
 	private Time time;
-	
 }

@@ -12,7 +12,7 @@ import lombok.*;
 public class Competitor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "competitorId")
+    @Column(name = "competitorId", nullable = false)
 	private long competitorId;
 	
 	@Column(name = "firstName", nullable = false, length = 20)
@@ -28,9 +28,9 @@ public class Competitor {
 	private Date dateOfBirth;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "gender", length = 10, nullable = false)
+	@Column(name = "gender", nullable = false, length = 10)
 	private Gender gender;
 	
-	@Column(name = "nationality", length = 50, nullable = false)
+	@Column(name = "nationality", nullable = false, length = 50)
 	private String nationality;
 }

@@ -13,16 +13,16 @@ import com.polsl.model.RaceStyle;
 public class Race {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "raceId")
+    @Column(name = "raceId", nullable = false)
     private Long raceId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "style", length = 20)
+    @Column(name = "style", nullable = false, length = 20)
     private RaceStyle style;
 
-    @Column(name = "distance")
+    @Column(name = "distance", nullable = false)
     private int distance;
     
-    @Column(name = "raceDate")
+    @Column(name = "raceDate", nullable = false)
     private Timestamp date;
 }
