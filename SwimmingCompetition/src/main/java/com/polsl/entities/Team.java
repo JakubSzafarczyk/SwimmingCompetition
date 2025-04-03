@@ -1,8 +1,10 @@
 package com.polsl.entities;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import lombok.*;
 
+@Getter
+@Setter
 @Entity
 public class Team {
 	@Id
