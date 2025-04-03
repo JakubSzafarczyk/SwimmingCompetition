@@ -1,4 +1,4 @@
-package com.polsl.entities;
+package com.polsl.entity;
 
 
 import java.sql.Time;

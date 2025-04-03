@@ -1,4 +1,4 @@
-package Controller;
+package com.polsl.controller;
 
 public class CompetitorController {
 
