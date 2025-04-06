@@ -24,7 +24,7 @@ public class Coach {
 	@Column(name = "last_name", nullable = false, length = 50)
 	private String lastName;
 	
-	 @Column(name = "date_of_birth", nullable = false)
+	@Column(name = "date_of_birth", nullable = false)
 	private Date dateOfBirth;
 	
 	@Enumerated(EnumType.STRING)
