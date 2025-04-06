@@ -42,4 +42,12 @@ public class Competitor {
 	
 	@OneToMany(mappedBy = "competitor")
     private Set<Result> results = new HashSet<Result>();
-	}
+	
+	@ManyToMany
+    @JoinTable(
+        name = "competitor_competition",
+        joinColumns = @JoinColumn(name = "competitor_id"),
+        inverseJoinColumns = @JoinColumn(name = "competition_id")
+    )
+    private Set<Competition> competitions = new HashSet<Competition>();
+}

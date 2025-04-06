@@ -20,7 +20,7 @@ public class Location {
 	private String name;
 	
 	@Column(name = "address", nullable = false, length = 200)
-	private String adderss;
+	private String address;
 	
 	@Column(name = "pool_length", nullable = false)
 	private int poolLength;
@@ -28,6 +28,6 @@ public class Location {
 	@Column(name = "capacity")
 	private int capacity;
 	
-	@OneToMany(mappedBy = "competition_id")
+	@OneToMany(mappedBy = "location")
     private Set<Competition> competitions = new HashSet<Competition>();
 }

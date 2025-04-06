@@ -1,6 +1,8 @@
 package com.polsl.entity;
 
 import java.sql.Timestamp;
+import java.util.Set;
+import java.util.HashSet;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,4 +31,10 @@ public class Competition {
 	@ManyToOne
     @JoinColumn(name = "location_id")
     private Location location;
+	
+	@ManyToMany(mappedBy = "competitions")
+    private Set<Race> races = new HashSet<Race>();
+    
+    @ManyToMany(mappedBy = "competitions")
+    private Set<Competitor> competitors = new HashSet<Competitor>();
 }
