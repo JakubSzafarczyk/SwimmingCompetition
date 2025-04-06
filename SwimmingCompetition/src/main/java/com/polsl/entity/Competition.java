@@ -11,18 +11,22 @@ import lombok.*;
 public class Competition {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "competitionId", nullable = false)
+    @Column(name = "competition_id", nullable = false)
 	private long competitionId;
 	
 	@Column(name = "name", nullable = false, length = 100)
 	private String name;
 	
-	@Column(name = "startDate")
+	@Column(name = "start_date")
 	private Timestamp startDate;
 	
-	@Column(name = "endDate")
+	@Column(name = "end_date")
 	private Timestamp endDate;
 	
 	@Column(name = "description", length = 500)
 	private String description;
+	
+	@ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
 }

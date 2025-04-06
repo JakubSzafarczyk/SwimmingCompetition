@@ -12,12 +12,20 @@ import lombok.*;
 public class Result {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "resultId", nullable = false)
+    @Column(name = "result_id", nullable = false)
 	private long resultId;
 	
 	@Column(name = "place")
 	private long place;
 	
-	@Column(name = "resultTime", nullable = false)
+	@Column(name = "result_time", nullable = false)
 	private Time time;
+	
+	@ManyToOne
+    @JoinColumn(name = "competitor_id", nullable = false)
+    private Competitor competitor;
+    
+    @ManyToOne
+    @JoinColumn(name = "race_id", nullable = false)
+    private Race race;
 }

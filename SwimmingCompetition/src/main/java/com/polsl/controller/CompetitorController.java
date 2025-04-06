@@ -13,12 +13,13 @@ public class CompetitorController {
 	@Autowired
 	CompetitorRepository competitorRepo;
 	
-	@PostMapping("/add")
+	@PostMapping
 	public @ResponseBody String addCompetitor(@RequestBody Competitor competitor) {
 		competitor = competitorRepo.save(competitor);
 		return "Added with id=" + competitor.getCompetitorId();
 	}
-	@GetMapping("/get")
+	
+	@GetMapping
 	public @ResponseBody Iterable<Competitor> getCompetitor(@RequestParam String lastName) {
 	return competitorRepo.findByLastName(lastName);
 	}

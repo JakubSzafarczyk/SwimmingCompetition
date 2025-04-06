@@ -1,6 +1,8 @@
 package com.polsl.entity;
 
 import java.sql.Date;
+import java.util.Set;
+import java.util.HashSet;
 import com.polsl.model.Gender;
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,19 +14,19 @@ import lombok.*;
 public class Competitor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "competitorId", nullable = false)
+    @Column(name = "competitor_id", nullable = false)
 	private long competitorId;
 	
-	@Column(name = "firstName", nullable = false, length = 20)
+	@Column(name = "first_name", nullable = false, length = 20)
 	private String firstName;
 	
-	@Column(name = "secondName", length = 20)
+	@Column(name = "second_name", length = 20)
 	private String secondName;
 	
-	@Column(name = "lastName", nullable = false, length = 50)
+	@Column(name = "last_name", nullable = false, length = 50)
 	private String lastName;
 	
-	 @Column(name = "dateOfBirth", nullable = false)
+	 @Column(name = "date_of_birth", nullable = false)
 	private Date dateOfBirth;
 	
 	@Enumerated(EnumType.STRING)
@@ -33,4 +35,11 @@ public class Competitor {
 	
 	@Column(name = "nationality", nullable = false, length = 50)
 	private String nationality;
-}
+	
+	@ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
+	
+	@OneToMany(mappedBy = "competitor")
+    private Set<Result> results = new HashSet<Result>();
+	}

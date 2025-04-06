@@ -1,5 +1,8 @@
 package com.polsl.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,7 +13,7 @@ import lombok.*;
 public class Location {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "locationId", nullable = false)
+    @Column(name = "location_id", nullable = false)
 	private long locationId;
 	
 	@Column(name = "name", nullable = false, length = 100)
@@ -19,9 +22,12 @@ public class Location {
 	@Column(name = "address", nullable = false, length = 200)
 	private String adderss;
 	
-	@Column(name = "poolLength", nullable = false)
+	@Column(name = "pool_length", nullable = false)
 	private int poolLength;
 	
 	@Column(name = "capacity")
 	private int capacity;
+	
+	@OneToMany(mappedBy = "competition_id")
+    private Set<Competition> competitions = new HashSet<Competition>();
 }

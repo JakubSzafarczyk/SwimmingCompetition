@@ -12,19 +12,19 @@ import lombok.*;
 public class Coach {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "coachId", nullable = false)
-	private long coachID;
+    @Column(name = "coach_id", nullable = false)
+	private long coachId;
 	
-	@Column(name = "firstName", nullable = false, length = 20)
+	@Column(name = "first_name", nullable = false, length = 20)
 	private String firstName;
 	
-	@Column(name = "secondName", length = 20)
+	@Column(name = "second_name", length = 20)
 	private String secondName;
 	
-	@Column(name = "lastName", nullable = false, length = 50)
+	@Column(name = "last_name", nullable = false, length = 50)
 	private String lastName;
 	
-	 @Column(name = "dateOfBirth", nullable = false)
+	 @Column(name = "date_of_birth", nullable = false)
 	private Date dateOfBirth;
 	
 	@Enumerated(EnumType.STRING)
@@ -33,4 +33,8 @@ public class Coach {
 	
 	@Column(name = "nationality", nullable = false, length = 50)
 	private String nationality;
+	
+	@ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
 }
