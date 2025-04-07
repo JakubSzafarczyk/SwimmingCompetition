@@ -14,7 +14,7 @@ public class Location {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "location_id", nullable = false)
-	private long locationId;
+	private Long locationId;
 	
 	@Column(name = "name", nullable = false, length = 100)
 	private String name;

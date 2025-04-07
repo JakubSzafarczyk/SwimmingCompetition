@@ -14,7 +14,7 @@ public class Competition {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "competition_id", nullable = false)
-	private long competitionId;
+	private Long competitionId;
 	
 	@Column(name = "name", nullable = false, length = 100)
 	private String name;

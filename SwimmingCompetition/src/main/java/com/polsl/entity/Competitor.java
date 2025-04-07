@@ -15,7 +15,7 @@ public class Competitor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "competitor_id", nullable = false)
-	private long competitorId;
+	private Long competitorId;
 	
 	@Column(name = "first_name", nullable = false, length = 20)
 	private String firstName;

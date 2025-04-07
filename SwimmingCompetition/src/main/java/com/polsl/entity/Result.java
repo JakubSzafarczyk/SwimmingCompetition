@@ -13,7 +13,7 @@ public class Result {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "result_id", nullable = false)
-	private long resultId;
+	private Long resultId;
 	
 	@Column(name = "place")
 	private long place;
