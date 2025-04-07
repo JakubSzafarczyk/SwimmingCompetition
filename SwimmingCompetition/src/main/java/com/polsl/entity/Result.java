@@ -25,7 +25,7 @@ public class Result {
 	private Time time;
 	
 	@NotNull
-	@ManyToOne
+	@ManyToOne()
     @JoinColumn(name = "competitor_id", nullable = false)
     private Competitor competitor;
     

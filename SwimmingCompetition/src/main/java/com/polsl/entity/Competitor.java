@@ -47,10 +47,10 @@ public class Competitor {
     @JoinColumn(name = "team_id")
     private Team team;
 	
-	@OneToMany(mappedBy = "competitor", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToMany(mappedBy = "competitor", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Set<Result> results = new HashSet<Result>();
 	
-	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(
         name = "competitor_competition",
         joinColumns = @JoinColumn(name = "competitor_id"),

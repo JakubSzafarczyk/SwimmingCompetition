@@ -24,9 +24,9 @@ public class Team {
 	@Column(name = "headquarters", length = 100)
     private String headquarters;
 	
-	@OneToMany(mappedBy = "team", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToMany(mappedBy = "team", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Set<Coach> coaches = new HashSet<Coach>();
 	
-	@OneToMany(mappedBy = "team", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToMany(mappedBy = "team", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Set<Competitor> competitors = new HashSet<Competitor>();
 }

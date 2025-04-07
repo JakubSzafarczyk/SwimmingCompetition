@@ -33,7 +33,7 @@ public class Race {
     @Column(name = "race_date", nullable = false)
     private Timestamp date;
     
-    @OneToMany(mappedBy = "race", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "race", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Set<Result> results = new HashSet<Result>();
     
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})

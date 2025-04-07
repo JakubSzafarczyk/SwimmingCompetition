@@ -33,6 +33,6 @@ public class Location {
 	@Column(name = "capacity")
 	private int capacity;
 	
-	@OneToMany(mappedBy = "location", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToMany(mappedBy = "location", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Set<Competition> competitions = new HashSet<Competition>();
 }
