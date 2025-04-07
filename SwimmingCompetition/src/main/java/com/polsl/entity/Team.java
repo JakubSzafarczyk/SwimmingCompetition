@@ -3,6 +3,7 @@ package com.polsl.entity;
 import java.util.Set;
 import java.util.HashSet;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -11,10 +12,12 @@ import lombok.*;
 @Table(name = "teams")
 public class Team {
 	@Id
+	@NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "team_id", nullable = false)
     private Long teamId;
 
+	@NotNull
 	@Column(name = "name", nullable = false, length = 100)
     private String name;
 	

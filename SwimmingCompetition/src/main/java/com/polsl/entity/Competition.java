@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.Set;
 import java.util.HashSet;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -12,10 +13,12 @@ import lombok.*;
 @Table(name = "competitions")
 public class Competition {
 	@Id
+	@NotNull
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "competition_id", nullable = false)
 	private Long competitionId;
 	
+	@NotNull
 	@Column(name = "name", nullable = false, length = 100)
 	private String name;
 	

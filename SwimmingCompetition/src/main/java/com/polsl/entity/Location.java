@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -12,16 +13,20 @@ import lombok.*;
 @Table(name = "locations")
 public class Location {
 	@Id
+	@NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "location_id", nullable = false)
 	private Long locationId;
 	
+	@NotNull
 	@Column(name = "name", nullable = false, length = 100)
 	private String name;
 	
+	@NotNull
 	@Column(name = "address", nullable = false, length = 200)
 	private String address;
 	
+	@NotNull
 	@Column(name = "pool_length", nullable = false)
 	private int poolLength;
 	
