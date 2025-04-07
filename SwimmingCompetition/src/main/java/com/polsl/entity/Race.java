@@ -36,11 +36,7 @@ public class Race {
     @OneToMany(mappedBy = "race", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Set<Result> results = new HashSet<Result>();
     
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-        name = "race_competition",
-        joinColumns = @JoinColumn(name = "race_id"),
-        inverseJoinColumns = @JoinColumn(name = "competition_id")
-    )
-    private Set<Competition> competitions = new HashSet<Competition>();
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "competition_id")
+    private Competition competition;
 }
