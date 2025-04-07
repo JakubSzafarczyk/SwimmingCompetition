@@ -28,10 +28,10 @@ public class Race {
     @Column(name = "race_date", nullable = false)
     private Timestamp date;
     
-    @OneToMany(mappedBy = "race")
+    @OneToMany(mappedBy = "race", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Result> results = new HashSet<Result>();
     
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
         name = "race_competition",
         joinColumns = @JoinColumn(name = "race_id"),

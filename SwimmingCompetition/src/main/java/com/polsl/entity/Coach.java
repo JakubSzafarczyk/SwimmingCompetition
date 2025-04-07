@@ -34,7 +34,7 @@ public class Coach {
 	@Column(name = "nationality", nullable = false, length = 50)
 	private String nationality;
 	
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "team_id")
     private Team team;
 }
