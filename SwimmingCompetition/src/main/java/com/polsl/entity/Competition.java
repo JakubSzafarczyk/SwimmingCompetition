@@ -35,11 +35,7 @@ public class Competition {
     @JoinColumn(name = "location_id")
     private Location location;
 	
-<<<<<<< HEAD
-	@ManyToMany(mappedBy = "competitions", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
-=======
-	@OneToMany(mappedBy = "competition", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
->>>>>>> 448c9ecd339c36cef4fc4c2cca62661deed0f751
+	@OneToMany(mappedBy = "competition", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     private Set<Race> races = new HashSet<Race>();
     
     @ManyToMany(mappedBy = "competitions", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
