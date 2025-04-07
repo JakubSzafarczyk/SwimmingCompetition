@@ -35,7 +35,7 @@ public class Competition {
     @JoinColumn(name = "location_id")
     private Location location;
 	
-	@ManyToMany(mappedBy = "competitions")
+	@OneToMany(mappedBy = "competition")
     private Set<Race> races = new HashSet<Race>();
     
     @ManyToMany(mappedBy = "competitions")
