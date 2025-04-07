@@ -35,9 +35,9 @@ public class Competition {
     @JoinColumn(name = "location_id")
     private Location location;
 	
-	@OneToMany(mappedBy = "competition")
+	@OneToMany(mappedBy = "competition", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Race> races = new HashSet<Race>();
     
-    @ManyToMany(mappedBy = "competitions")
+    @ManyToMany(mappedBy = "competitions", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Competitor> competitors = new HashSet<Competitor>();
 }
