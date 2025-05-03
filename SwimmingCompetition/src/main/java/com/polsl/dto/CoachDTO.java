@@ -6,10 +6,6 @@ import com.polsl.controller.CoachController;
 import com.polsl.entity.Coach;
 import com.polsl.model.Gender;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
