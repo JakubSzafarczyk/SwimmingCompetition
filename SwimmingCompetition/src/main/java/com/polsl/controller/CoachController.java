@@ -10,8 +10,8 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
 import com.polsl.dto.CoachDTO;
+import com.polsl.dto.TeamDTO;
 import com.polsl.entity.Coach;
-import com.polsl.entity.Team;
 import com.polsl.repository.CoachRepository;
 
 @RestController
@@ -22,9 +22,9 @@ public class CoachController {
     private CoachRepository coachRepository;
     
     @GetMapping("/{id}/team")
-    public @ResponseBody Team getTeamForCoach(@PathVariable Long id) {
+    public @ResponseBody TeamDTO getTeamForCoach(@PathVariable Long id) {
     Coach coach = coachRepository.findById(id).orElse(null);
-    return coach.getTeam();
+    return new TeamDTO(coach.getTeam());
     }
     
     @GetMapping("/{id}")

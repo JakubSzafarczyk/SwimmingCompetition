@@ -9,9 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
+
+import com.polsl.dto.CompetitorDTO;
+import com.polsl.dto.RaceDTO;
 import com.polsl.dto.ResultDTO;
-import com.polsl.entity.Competitor;
-import com.polsl.entity.Race;
 import com.polsl.entity.Result;
 import com.polsl.repository.ResultRepository;
 
@@ -23,29 +24,29 @@ public class ResultController {
     private ResultRepository resultRepository;
     
     @GetMapping("/{id}/competitor")
-    public @ResponseBody Competitor getCompetitorForResult(@PathVariable Long id) {
-    Result result = resultRepository.findById(id).orElse(null);
-    return result.getCompetitor();
+    public @ResponseBody CompetitorDTO getCompetitorForResult(@PathVariable Long id) {
+    	Result result = resultRepository.findById(id).orElse(null);
+    	return new CompetitorDTO(result.getCompetitor());
     }
     
     @GetMapping("/{id}/race")
-    public @ResponseBody Race getRaceForResult(@PathVariable Long id) {
-    Result result = resultRepository.findById(id).orElse(null);
-    return result.getRace();
+    public @ResponseBody RaceDTO getRaceForResult(@PathVariable Long id) {
+    	Result result = resultRepository.findById(id).orElse(null);
+    	return new RaceDTO(result.getRace());
     }
     
     @GetMapping("/{id}")
     public @ResponseBody ResultDTO getResult(@PathVariable Long id) {
-    Result result = resultRepository.findById(id).orElse(null);
-    return new ResultDTO(result);
+    	Result result = resultRepository.findById(id).orElse(null);
+    	return new ResultDTO(result);
     }
     
     @GetMapping
     public @ResponseBody CollectionModel<ResultDTO> getAllResults() {
-    List<ResultDTO> resultsDTO =
-    StreamSupport.stream(resultRepository.findAll().spliterator(), false)
-    .map(ResultDTO::new).collect(Collectors.toList());
-    return CollectionModel.of(resultsDTO);
+    	List<ResultDTO> resultsDTO =
+    			StreamSupport.stream(resultRepository.findAll().spliterator(), false)
+    			.map(ResultDTO::new).collect(Collectors.toList());
+    	return CollectionModel.of(resultsDTO);
     }
     
     @PostMapping

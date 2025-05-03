@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
+import com.polsl.dto.CompetitionDTO;
 import com.polsl.dto.RaceDTO;
-import com.polsl.entity.Competition;
+import com.polsl.dto.ResultDTO;
 import com.polsl.entity.Race;
-import com.polsl.entity.Result;
 import com.polsl.repository.RaceRepository;
 
 @RestController
@@ -23,28 +23,30 @@ public class RaceController {
     private RaceRepository raceRepository;
     
     @GetMapping("/{id}/results")
-    public @ResponseBody Iterable<Result> getResultsForRace(@PathVariable Long id) {
-    Race race = raceRepository.findById(id).orElse(null);
-    return race.getResults();
+    public @ResponseBody CollectionModel<ResultDTO> getResultsForRace(@PathVariable Long id) {
+    	Race race = raceRepository.findById(id).orElse(null);
+    	List<ResultDTO> results = race.getResults().stream()
+    			.map(ResultDTO::new).collect(Collectors.toList());
+    	return CollectionModel.of(results);
     }
     @GetMapping("/{id}/competition")
-    public @ResponseBody Competition getCompetitionForRace(@PathVariable Long id) {
-    Race race = raceRepository.findById(id).orElse(null);
-    return race.getCompetition();
+    public @ResponseBody CompetitionDTO getCompetitionForRace(@PathVariable Long id) {
+    	Race race = raceRepository.findById(id).orElse(null);
+    	return new CompetitionDTO(race.getCompetition());
     }
     
     @GetMapping("/{id}")
     public @ResponseBody RaceDTO getRace(@PathVariable Long id) {
-    Race race = raceRepository.findById(id).orElse(null);
-    return new RaceDTO(race);
+    	Race race = raceRepository.findById(id).orElse(null);
+    	return new RaceDTO(race);
     }
     
     @GetMapping
     public @ResponseBody CollectionModel<RaceDTO> getAllRaces() {
-    List<RaceDTO> racesDTO =
-    StreamSupport.stream(raceRepository.findAll().spliterator(), false)
-    .map(RaceDTO::new).collect(Collectors.toList());
-    return CollectionModel.of(racesDTO);
+    	List<RaceDTO> racesDTO =
+    			StreamSupport.stream(raceRepository.findAll().spliterator(), false)
+    			.map(RaceDTO::new).collect(Collectors.toList());
+    	return CollectionModel.of(racesDTO);
     }
     
     @PostMapping

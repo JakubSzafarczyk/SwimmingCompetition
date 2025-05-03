@@ -10,10 +10,10 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
 import com.polsl.dto.CompetitionDTO;
+import com.polsl.dto.CompetitorDTO;
+import com.polsl.dto.LocationDTO;
+import com.polsl.dto.RaceDTO;
 import com.polsl.entity.Competition;
-import com.polsl.entity.Competitor;
-import com.polsl.entity.Location;
-import com.polsl.entity.Race;
 import com.polsl.repository.CompetitionRepository;
 
 @RestController
@@ -24,35 +24,39 @@ public class CompetitionController {
     private CompetitionRepository competitionRepository;
 
     @GetMapping("/{id}/location")
-    public @ResponseBody Location getLocationForCompetition(@PathVariable Long id) {
-    Competition competition = competitionRepository.findById(id).orElse(null);
-    return competition.getLocation();
+    public @ResponseBody LocationDTO getLocationForCompetition(@PathVariable Long id) {
+    	Competition competition = competitionRepository.findById(id).orElse(null);
+    	return new LocationDTO(competition.getLocation());
     }
     
     @GetMapping("/{id}/races")
-    public @ResponseBody Iterable<Race> getRacesForCompetition(@PathVariable Long id) {
-    Competition competition = competitionRepository.findById(id).orElse(null);
-    return competition.getRaces();
+    public @ResponseBody CollectionModel<RaceDTO> getRacesForCompetition(@PathVariable Long id) {
+    	Competition competition = competitionRepository.findById(id).orElse(null);
+    	List<RaceDTO> races = competition.getRaces().stream()
+    			.map(RaceDTO::new).collect(Collectors.toList());
+        return CollectionModel.of(races);
     }
     
     @GetMapping("/{id}/competitors")
-    public @ResponseBody Iterable<Competitor> getCompetitorsForCompetition(@PathVariable Long id) {
-    Competition competition = competitionRepository.findById(id).orElse(null);
-    return competition.getCompetitors();
+    public @ResponseBody CollectionModel<CompetitorDTO> getCompetitorsForCompetition(@PathVariable Long id) {
+    	Competition competition = competitionRepository.findById(id).orElse(null);
+    	List<CompetitorDTO> competitor = competition.getCompetitors().stream()
+    			.map(CompetitorDTO::new).collect(Collectors.toList());
+        return CollectionModel.of(competitor);
     }
     
     @GetMapping("/{id}")
     public @ResponseBody CompetitionDTO getCompetition(@PathVariable Long id) {
-    Competition competition = competitionRepository.findById(id).orElse(null);
-    return new CompetitionDTO(competition);
+    	Competition competition = competitionRepository.findById(id).orElse(null);
+    	return new CompetitionDTO(competition);
     }
     
     @GetMapping
     public @ResponseBody CollectionModel<CompetitionDTO> getAllCompetitions() {
-    List<CompetitionDTO> competitionsDTO =
-    StreamSupport.stream(competitionRepository.findAll().spliterator(), false)
-    .map(CompetitionDTO::new).collect(Collectors.toList());
-    return CollectionModel.of(competitionsDTO);
+    	List<CompetitionDTO> competitionsDTO =
+    			StreamSupport.stream(competitionRepository.findAll().spliterator(), false)
+    			.map(CompetitionDTO::new).collect(Collectors.toList());
+    	return CollectionModel.of(competitionsDTO);
     }
     
     @PostMapping

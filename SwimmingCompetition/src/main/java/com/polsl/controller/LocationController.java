@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
+import com.polsl.dto.CompetitionDTO;
 import com.polsl.dto.LocationDTO;
 import com.polsl.entity.Competition;
 import com.polsl.entity.Location;
@@ -22,9 +23,11 @@ public class LocationController {
     private LocationRepository locationRepository;
     
     @GetMapping("/{id}/competitions")
-    public @ResponseBody Iterable<Competition> getCompetitionsForLocation(@PathVariable Long id) {
-    Location location = locationRepository.findById(id).orElse(null);
-    return location.getCompetitions();
+    public @ResponseBody CollectionModel<CompetitionDTO> getCompetitionsForLocation(@PathVariable Long id) {
+    	Location location = locationRepository.findById(id).orElse(null);
+    	List<CompetitionDTO> competitions = location.getCompetitions().stream()
+    			.map(CompetitionDTO::new).collect(Collectors.toList());
+    return CollectionModel.of(competitions);
     }
     
     @GetMapping("/{id}")

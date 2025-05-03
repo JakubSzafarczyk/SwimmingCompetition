@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
+import com.polsl.dto.CoachDTO;
+import com.polsl.dto.CompetitorDTO;
 import com.polsl.dto.TeamDTO;
-import com.polsl.entity.Coach;
-import com.polsl.entity.Competitor;
 import com.polsl.entity.Team;
 import com.polsl.repository.TeamRepository;
 
@@ -23,29 +23,34 @@ public class TeamController {
     private TeamRepository teamRepository;
     
     @GetMapping("/{id}/coaches")
-    public @ResponseBody Iterable<Coach> getCoachesForTeam(@PathVariable Long id) {
-    Team team = teamRepository.findById(id).orElse(null);
-    return team.getCoaches();
+    public @ResponseBody CollectionModel<CoachDTO> getCoachesForTeam(@PathVariable Long id) {
+        Team team = teamRepository.findById(id).orElse(null);
+        List<CoachDTO> coaches = team.getCoaches().stream()
+            .map(CoachDTO::new).collect(Collectors.toList());
+        return CollectionModel.of(coaches);
     }
     
+    
     @GetMapping("/{id}/competitors")
-    public @ResponseBody Iterable<Competitor> getCompetitorsForTeam(@PathVariable Long id) {
-    Team team = teamRepository.findById(id).orElse(null);
-    return team.getCompetitors();
+    public @ResponseBody CollectionModel<CompetitorDTO> getCompetitorsForTeam(@PathVariable Long id) {
+        Team team = teamRepository.findById(id).orElse(null);
+        List<CompetitorDTO> competitors = team.getCompetitors().stream()
+            .map(CompetitorDTO::new).collect(Collectors.toList());
+        return CollectionModel.of(competitors);
     }
     
     @GetMapping("/{id}")
     public @ResponseBody TeamDTO getTeam(@PathVariable Long id) {
-    Team team = teamRepository.findById(id).orElse(null);
-    return new TeamDTO(team);
+    	Team team = teamRepository.findById(id).orElse(null);
+    	return new TeamDTO(team);
     }
     
     @GetMapping
     public @ResponseBody CollectionModel<TeamDTO> getAllTeams() {
-    List<TeamDTO> teamsDTO =
-    StreamSupport.stream(teamRepository.findAll().spliterator(), false)
-    .map(TeamDTO::new).collect(Collectors.toList());
-    return CollectionModel.of(teamsDTO);
+    	List<TeamDTO> teamsDTO =
+    			StreamSupport.stream(teamRepository.findAll().spliterator(), false)
+    			.map(TeamDTO::new).collect(Collectors.toList());
+    	return CollectionModel.of(teamsDTO);
     }
     
     @PostMapping
