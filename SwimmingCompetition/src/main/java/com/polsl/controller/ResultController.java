@@ -1,8 +1,17 @@
 package com.polsl.controller;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
+
+import com.polsl.dto.ResultDTO;
+import com.polsl.entity.Competitor;
+import com.polsl.entity.Race;
 import com.polsl.entity.Result;
 import com.polsl.repository.ResultRepository;
 
@@ -13,14 +22,30 @@ public class ResultController {
     @Autowired
     private ResultRepository resultRepository;
     
-    @GetMapping
-    public Iterable<Result> getAll() {
-        return resultRepository.findAll();
+    @GetMapping("/{id}/competitor")
+    public @ResponseBody Competitor getCompetitorForResult(@PathVariable Long id) {
+    Result result = resultRepository.findById(id).orElse(null);
+    return result.getCompetitor();
+    }
+    
+    @GetMapping("/{id}/race")
+    public @ResponseBody Race getRaceForResult(@PathVariable Long id) {
+    Result result = resultRepository.findById(id).orElse(null);
+    return result.getRace();
     }
     
     @GetMapping("/{id}")
-    public Result getById(@PathVariable Long id) {
-        return resultRepository.findById(id).orElse(null);
+    public @ResponseBody ResultDTO getResult(@PathVariable Long id) {
+    Result result = resultRepository.findById(id).orElse(null);
+    return new ResultDTO(result);
+    }
+    
+    @GetMapping
+    public @ResponseBody CollectionModel<ResultDTO> getAllResults() {
+    List<ResultDTO> resultsDTO =
+    StreamSupport.stream(resultRepository.findAll().spliterator(), false)
+    .map(ResultDTO::new).collect(Collectors.toList());
+    return CollectionModel.of(resultsDTO);
     }
     
     @PostMapping

@@ -18,7 +18,7 @@ public class Result {
 	private Long resultId;
 	
 	@Column(name = "place")
-	private long place;
+	private Long place;
 	
 	@NotNull
 	@Column(name = "result_time", nullable = false)

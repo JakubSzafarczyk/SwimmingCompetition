@@ -10,6 +10,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.sql.Timestamp;
+
 @Getter
 @Setter
 public class CompetitionDTO extends RepresentationModel<CompetitionDTO>{

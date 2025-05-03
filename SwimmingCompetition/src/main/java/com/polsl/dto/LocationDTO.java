@@ -4,16 +4,12 @@ import org.springframework.hateoas.RepresentationModel;
 
 import com.polsl.controller.LocationController;
 import com.polsl.entity.Location;
-import com.polsl.model.Gender;
 
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import java.sql.Date;
 @Getter
 @Setter
 public class LocationDTO extends RepresentationModel<LocationDTO>{

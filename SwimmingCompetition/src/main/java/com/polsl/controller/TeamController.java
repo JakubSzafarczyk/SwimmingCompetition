@@ -1,8 +1,17 @@
 package com.polsl.controller;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
+
+import com.polsl.dto.TeamDTO;
+import com.polsl.entity.Coach;
+import com.polsl.entity.Competitor;
 import com.polsl.entity.Team;
 import com.polsl.repository.TeamRepository;
 
@@ -13,14 +22,30 @@ public class TeamController {
     @Autowired
     private TeamRepository teamRepository;
     
-    @GetMapping
-    public Iterable<Team> getAll() {
-        return teamRepository.findAll();
+    @GetMapping("/{id}/coaches")
+    public @ResponseBody Iterable<Coach> getCoachesForTeam(@PathVariable Long id) {
+    Team team = teamRepository.findById(id).orElse(null);
+    return team.getCoaches();
+    }
+    
+    @GetMapping("/{id}/competitors")
+    public @ResponseBody Iterable<Competitor> getCompetitorsForTeam(@PathVariable Long id) {
+    Team team = teamRepository.findById(id).orElse(null);
+    return team.getCompetitors();
     }
     
     @GetMapping("/{id}")
-    public Team getById(@PathVariable Long id) {
-        return teamRepository.findById(id).orElse(null);
+    public @ResponseBody TeamDTO getTeam(@PathVariable Long id) {
+    Team team = teamRepository.findById(id).orElse(null);
+    return new TeamDTO(team);
+    }
+    
+    @GetMapping
+    public @ResponseBody CollectionModel<TeamDTO> getAllTeams() {
+    List<TeamDTO> teamsDTO =
+    StreamSupport.stream(teamRepository.findAll().spliterator(), false)
+    .map(TeamDTO::new).collect(Collectors.toList());
+    return CollectionModel.of(teamsDTO);
     }
     
     @PostMapping
