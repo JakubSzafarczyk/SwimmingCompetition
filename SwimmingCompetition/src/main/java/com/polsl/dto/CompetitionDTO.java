@@ -4,7 +4,6 @@ import org.springframework.hateoas.RepresentationModel;
 
 import com.polsl.controller.CompetitionController;
 import com.polsl.entity.Competition;
-import com.polsl.entity.Location;
 import lombok.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
