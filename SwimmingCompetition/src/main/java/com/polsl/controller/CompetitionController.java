@@ -22,37 +22,31 @@ public class CompetitionController {
 
     @Autowired
     private CompetitionRepository competitionRepository;
-    
-    //@GetMapping
-    //public Iterable<Competition> getAll() {
-    //    return competitionRepository.findAll();
-    //}
-    
-    //@GetMapping("/{id}")
-    //public Competition getById(@PathVariable Long id) {
-    //    return competitionRepository.findById(id).orElse(null);
-    //}
-    
-    @GetMapping("/{id}/race")
-    public @ResponseBody Iterable<Race> getRaceForCompetition(@PathVariable Long id) {
-    Competition competition = competitionRepository.findById(id).orElse(null);
-    return competition.getRaces();
-    }
-    @GetMapping("/{id}/competitor")
-    public @ResponseBody Iterable<Competitor> getCompetitorForCompetition(@PathVariable Long id) {
-    Competition competition = competitionRepository.findById(id).orElse(null);
-    return competition.getCompetitors();
-    }
+
     @GetMapping("/{id}/location")
     public @ResponseBody Location getLocationForCompetition(@PathVariable Long id) {
     Competition competition = competitionRepository.findById(id).orElse(null);
     return competition.getLocation();
     }
+    
+    @GetMapping("/{id}/races")
+    public @ResponseBody Iterable<Race> getRacesForCompetition(@PathVariable Long id) {
+    Competition competition = competitionRepository.findById(id).orElse(null);
+    return competition.getRaces();
+    }
+    
+    @GetMapping("/{id}/competitors")
+    public @ResponseBody Iterable<Competitor> getCompetitorsForCompetition(@PathVariable Long id) {
+    Competition competition = competitionRepository.findById(id).orElse(null);
+    return competition.getCompetitors();
+    }
+    
     @GetMapping("/{id}")
     public @ResponseBody CompetitionDTO getCompetition(@PathVariable Long id) {
     Competition competition = competitionRepository.findById(id).orElse(null);
     return new CompetitionDTO(competition);
     }
+    
     @GetMapping
     public @ResponseBody CollectionModel<CompetitionDTO> getAllCompetitions() {
     List<CompetitionDTO> competitionsDTO =

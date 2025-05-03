@@ -21,16 +21,6 @@ public class CoachController {
     @Autowired
     private CoachRepository coachRepository;
     
-    //@GetMapping
-   // public Iterable<Coach> getAll() {
-   //     return coachRepository.findAll();
-   // }
-    
-    //@GetMapping("/{id}")
-    //public Coach getById(@PathVariable Long id) {
-    //    return coachRepository.findById(id).orElse(null);
-    //}
-    
     @GetMapping("/{id}/team")
     public @ResponseBody Team getTeamForCoach(@PathVariable Long id) {
     Coach coach = coachRepository.findById(id).orElse(null);
@@ -42,6 +32,7 @@ public class CoachController {
     Coach coach = coachRepository.findById(id).orElse(null);
     return new CoachDTO(coach);
     }
+    
     @GetMapping
     public @ResponseBody CollectionModel<CoachDTO> getAllCoaches() {
     List<CoachDTO> coachsDTO =

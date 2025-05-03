@@ -10,9 +10,8 @@ VALUES
 ('John', 'Michael', 'Smith', '2003-04-15', 'MALE', 'USA'),
 ('Emily', 'Rose', 'Brown', '2005-06-20', 'FEMALE', 'Canada');
 INSERT INTO competitions (name, start_date, end_date, description)
-VALUES (
-    'Spring Marathon 2025',
-    '2025-04-20 09:00:00',
-    '2025-04-20 18:00:00',
-    'Annual spring marathon for amateur and professional runners.'
-);
+VALUES 
+('Spring Marathon 2025', '2025-04-20 09:00:00', '2025-04-20 18:00:00', 'Annual spring marathon for amateur and professional runners.');
+INSERT INTO locations (name, address, pool_length, capacity)
+VALUES 
+('Aqua Sports Center', '123 Swim Lane, Kraków, Poland', 50, 200);

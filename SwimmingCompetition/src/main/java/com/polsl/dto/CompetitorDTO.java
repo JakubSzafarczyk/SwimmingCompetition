@@ -29,7 +29,7 @@ public CompetitorDTO(Competitor competitor){
 	this.add(linkTo(methodOn(CompetitorController.class)
 			.getTeamForCompetitor(competitor.getCompetitorId())).withRel("team"));
 	this.add(linkTo(methodOn(CompetitorController.class)
-			.getResultsForCompetitor(competitor.getCompetitorId())).withRel("result"));
+			.getResultsForCompetitor(competitor.getCompetitorId())).withRel("results"));
 	this.add(linkTo(methodOn(CompetitorController.class)
 			.getCompetitionsForCompetitor(competitor.getCompetitorId())).withRel("competitions"));
 	

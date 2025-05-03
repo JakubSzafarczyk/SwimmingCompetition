@@ -22,27 +22,19 @@ public class CompetitorController {
 
     @Autowired
     private CompetitorRepository competitorRepository;
-    
-    //@GetMapping
-    //public Iterable<Competitor> getAll() {
-    //    return competitorRepository.findAll();
-    //}
-    
-    //@GetMapping("/{id}")
-    //public Competitor getById(@PathVariable Long id) {
-    //    return competitorRepository.findById(id).orElse(null);
-    //}
-    
+
     @GetMapping("/{id}/team")
     public @ResponseBody Team getTeamForCompetitor(@PathVariable Long id) {
     Competitor competitor = competitorRepository.findById(id).orElse(null);
     return competitor.getTeam();
     }
+    
     @GetMapping("/{id}/results")
     public @ResponseBody Iterable<Result> getResultsForCompetitor(@PathVariable Long id) {
     Competitor competitor = competitorRepository.findById(id).orElse(null);
     return competitor.getResults();
     }
+    
     @GetMapping("/{id}/competitions")
     public @ResponseBody Iterable<Competition> getCompetitionsForCompetitor(@PathVariable Long id) {
     Competitor competitor = competitorRepository.findById(id).orElse(null);

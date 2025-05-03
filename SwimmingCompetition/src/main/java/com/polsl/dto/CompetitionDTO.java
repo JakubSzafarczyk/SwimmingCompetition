@@ -24,9 +24,9 @@ public CompetitionDTO(Competition competition){
 	this.add(linkTo(methodOn(CompetitionController.class)
 			.getLocationForCompetition(competition.getCompetitionId())).withRel("location"));
 	this.add(linkTo(methodOn(CompetitionController.class)
-			.getRaceForCompetition(competition.getCompetitionId())).withRel("race"));
+			.getRacesForCompetition(competition.getCompetitionId())).withRel("races"));
 	this.add(linkTo(methodOn(CompetitionController.class)
-			.getCompetitorForCompetition(competition.getCompetitionId())).withRel("competitor"));
+			.getCompetitorsForCompetition(competition.getCompetitionId())).withRel("competitors"));
 }
 private Long competitionId;
 private String name;
