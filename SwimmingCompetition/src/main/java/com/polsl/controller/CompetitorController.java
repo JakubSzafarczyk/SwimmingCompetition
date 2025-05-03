@@ -16,6 +16,8 @@ import com.polsl.dto.TeamDTO;
 import com.polsl.entity.Competitor;
 import com.polsl.repository.CompetitorRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @RestController
 @RequestMapping("/competitors")
 public class CompetitorController {
@@ -25,13 +27,15 @@ public class CompetitorController {
 
     @GetMapping("/{id}/team")
     public @ResponseBody TeamDTO getTeamForCompetitor(@PathVariable Long id) {
-    	Competitor competitor = competitorRepository.findById(id).orElse(null);
+    	Competitor competitor = competitorRepository.findById(id)
+    			.orElseThrow(() -> new EntityNotFoundException("Competitor not found with id " + id));
     	return new TeamDTO(competitor.getTeam());
     }
     
     @GetMapping("/{id}/results")
     public @ResponseBody CollectionModel<ResultDTO> getResultsForCompetitor(@PathVariable Long id) {
-    	Competitor competitor = competitorRepository.findById(id).orElse(null);
+    	Competitor competitor = competitorRepository.findById(id)
+    			.orElseThrow(() -> new EntityNotFoundException("Competitor not found with id " + id));
     	List<ResultDTO> results = competitor.getResults().stream()
     			.map(ResultDTO::new).collect(Collectors.toList());
     	return CollectionModel.of(results);
@@ -39,7 +43,8 @@ public class CompetitorController {
     
     @GetMapping("/{id}/competitions")
     public @ResponseBody CollectionModel<CompetitionDTO> getCompetitionsForCompetitor(@PathVariable Long id) {
-    	Competitor competitor = competitorRepository.findById(id).orElse(null);
+    	Competitor competitor = competitorRepository.findById(id)
+    			.orElseThrow(() -> new EntityNotFoundException("Competitor not found with id " + id));
     	List<CompetitionDTO> competitions = competitor.getCompetitions().stream()
     			.map(CompetitionDTO::new).collect(Collectors.toList());
     	return CollectionModel.of(competitions);
@@ -47,7 +52,8 @@ public class CompetitorController {
  
     @GetMapping("/{id}")
     public @ResponseBody CompetitorDTO getCompetitor(@PathVariable Long id) {
-    	Competitor competitor = competitorRepository.findById(id).orElse(null);
+    	Competitor competitor = competitorRepository.findById(id)
+    			.orElseThrow(() -> new EntityNotFoundException("Competitor not found with id " + id));
     	return new CompetitorDTO(competitor);
     }
     @GetMapping
@@ -65,23 +71,23 @@ public class CompetitorController {
     
     @PutMapping("/{id}")
     public Competitor update(@PathVariable Long id, @RequestBody Competitor competitorDetails) {
-        Optional<Competitor> optionalCompetitor = competitorRepository.findById(id);
-        if (optionalCompetitor.isPresent()) {
-            Competitor competitor = optionalCompetitor.get();
-            competitor.setFirstName(competitorDetails.getFirstName());
-            competitor.setSecondName(competitorDetails.getSecondName());
-            competitor.setLastName(competitorDetails.getLastName());
-            competitor.setDateOfBirth(competitorDetails.getDateOfBirth());
-            competitor.setGender(competitorDetails.getGender());
-            competitor.setNationality(competitorDetails.getNationality());
-            competitor.setTeam(competitorDetails.getTeam());
-            return competitorRepository.save(competitor);
-        }
-        return null;
+        Competitor competitor = competitorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Competitor not found with id " + id));
+        competitor.setFirstName(competitorDetails.getFirstName());
+        competitor.setSecondName(competitorDetails.getSecondName());
+        competitor.setLastName(competitorDetails.getLastName());
+        competitor.setDateOfBirth(competitorDetails.getDateOfBirth());
+        competitor.setGender(competitorDetails.getGender());
+        competitor.setNationality(competitorDetails.getNationality());
+        competitor.setTeam(competitorDetails.getTeam());
+        return competitorRepository.save(competitor);
     }
     
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
+        if (!competitorRepository.existsById(id)) {
+            throw new EntityNotFoundException("Competitor not found with id " + id);
+        }
         competitorRepository.deleteById(id);
     }
 }

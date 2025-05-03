@@ -1,7 +1,6 @@
 package com.polsl.controller;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -16,6 +15,8 @@ import com.polsl.dto.RaceDTO;
 import com.polsl.entity.Competition;
 import com.polsl.repository.CompetitionRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @RestController
 @RequestMapping("/competitions")
 public class CompetitionController {
@@ -25,13 +26,15 @@ public class CompetitionController {
 
     @GetMapping("/{id}/location")
     public @ResponseBody LocationDTO getLocationForCompetition(@PathVariable Long id) {
-    	Competition competition = competitionRepository.findById(id).orElse(null);
+    	Competition competition = competitionRepository.findById(id)
+    			.orElseThrow(() -> new EntityNotFoundException("Competition not found with id " + id));
     	return new LocationDTO(competition.getLocation());
     }
     
     @GetMapping("/{id}/races")
     public @ResponseBody CollectionModel<RaceDTO> getRacesForCompetition(@PathVariable Long id) {
-    	Competition competition = competitionRepository.findById(id).orElse(null);
+    	Competition competition = competitionRepository.findById(id)
+    			.orElseThrow(() -> new EntityNotFoundException("Competition not found with id " + id));
     	List<RaceDTO> races = competition.getRaces().stream()
     			.map(RaceDTO::new).collect(Collectors.toList());
         return CollectionModel.of(races);
@@ -39,7 +42,8 @@ public class CompetitionController {
     
     @GetMapping("/{id}/competitors")
     public @ResponseBody CollectionModel<CompetitorDTO> getCompetitorsForCompetition(@PathVariable Long id) {
-    	Competition competition = competitionRepository.findById(id).orElse(null);
+    	Competition competition = competitionRepository.findById(id)
+    			.orElseThrow(() -> new EntityNotFoundException("Competition not found with id " + id));
     	List<CompetitorDTO> competitor = competition.getCompetitors().stream()
     			.map(CompetitorDTO::new).collect(Collectors.toList());
         return CollectionModel.of(competitor);
@@ -47,7 +51,8 @@ public class CompetitionController {
     
     @GetMapping("/{id}")
     public @ResponseBody CompetitionDTO getCompetition(@PathVariable Long id) {
-    	Competition competition = competitionRepository.findById(id).orElse(null);
+    	Competition competition = competitionRepository.findById(id)
+    			.orElseThrow(() -> new EntityNotFoundException("Competition not found with id " + id));
     	return new CompetitionDTO(competition);
     }
     
@@ -66,21 +71,21 @@ public class CompetitionController {
     
     @PutMapping("/{id}")
     public Competition update(@PathVariable Long id, @RequestBody Competition competitionDetails) {
-        Optional<Competition> optionalCompetition = competitionRepository.findById(id);
-        if (optionalCompetition.isPresent()) {
-            Competition competition = optionalCompetition.get();
-            competition.setName(competitionDetails.getName());
-            competition.setStartDate(competitionDetails.getStartDate());
-            competition.setEndDate(competitionDetails.getEndDate());
-            competition.setDescription(competitionDetails.getDescription());
-            competition.setLocation(competitionDetails.getLocation());
-            return competitionRepository.save(competition);
-        }
-        return null;
+    	Competition competition = competitionRepository.findById(id)
+        		.orElseThrow(() -> new EntityNotFoundException("Competition not found with id " + id));
+        competition.setName(competitionDetails.getName());
+        competition.setStartDate(competitionDetails.getStartDate());
+        competition.setEndDate(competitionDetails.getEndDate());
+        competition.setDescription(competitionDetails.getDescription());
+        competition.setLocation(competitionDetails.getLocation());
+        return competitionRepository.save(competition);
     }
     
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
+        if (!competitionRepository.existsById(id)) {
+            throw new EntityNotFoundException("Competition not found with id " + id);
+        }
         competitionRepository.deleteById(id);
     }
 }

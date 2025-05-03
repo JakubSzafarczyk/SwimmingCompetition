@@ -1,7 +1,6 @@
 package com.polsl.controller;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -14,6 +13,8 @@ import com.polsl.dto.TeamDTO;
 import com.polsl.entity.Coach;
 import com.polsl.repository.CoachRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @RestController
 @RequestMapping("/coaches")
 public class CoachController {
@@ -23,13 +24,15 @@ public class CoachController {
     
     @GetMapping("/{id}/team")
     public @ResponseBody TeamDTO getTeamForCoach(@PathVariable Long id) {
-    Coach coach = coachRepository.findById(id).orElse(null);
+    Coach coach = coachRepository.findById(id)
+    		.orElseThrow(() -> new EntityNotFoundException("Coach not found with id " + id));
     return new TeamDTO(coach.getTeam());
     }
     
     @GetMapping("/{id}")
     public @ResponseBody CoachDTO getCoach(@PathVariable Long id) {
-    Coach coach = coachRepository.findById(id).orElse(null);
+    Coach coach = coachRepository.findById(id)
+    		.orElseThrow(() -> new EntityNotFoundException("Coach not found with id " + id));
     return new CoachDTO(coach);
     }
     
@@ -48,23 +51,23 @@ public class CoachController {
     
     @PutMapping("/{id}")
     public Coach update(@PathVariable Long id, @RequestBody Coach coachDetails) {
-        Optional<Coach> optionalCoach = coachRepository.findById(id);
-        if (optionalCoach.isPresent()) {
-            Coach coach = optionalCoach.get();
-            coach.setFirstName(coachDetails.getFirstName());
-            coach.setSecondName(coachDetails.getSecondName());
-            coach.setLastName(coachDetails.getLastName());
-            coach.setDateOfBirth(coachDetails.getDateOfBirth());
-            coach.setGender(coachDetails.getGender());
-            coach.setNationality(coachDetails.getNationality());
-            coach.setTeam(coachDetails.getTeam());
-            return coachRepository.save(coach);
-        }
-        return null;
+    	Coach coach = coachRepository.findById(id)
+        		.orElseThrow(() -> new EntityNotFoundException("Coach not found with id " + id));
+        coach.setFirstName(coachDetails.getFirstName());
+        coach.setSecondName(coachDetails.getSecondName());
+        coach.setLastName(coachDetails.getLastName());
+        coach.setDateOfBirth(coachDetails.getDateOfBirth());
+        coach.setGender(coachDetails.getGender());
+        coach.setNationality(coachDetails.getNationality());
+        coach.setTeam(coachDetails.getTeam());
+        return coachRepository.save(coach); 
     }
     
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
+    	if (!coachRepository.existsById(id)) {
+            throw new EntityNotFoundException("Coach not found with id " + id);
+        }
         coachRepository.deleteById(id);
     }
 }
