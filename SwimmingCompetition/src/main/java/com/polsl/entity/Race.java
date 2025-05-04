@@ -15,7 +15,6 @@ import com.polsl.model.RaceStyle;
 @Table(name = "races")
 public class Race {
 	@Id
-	@NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "race_id", nullable = false)
     private Long raceId;

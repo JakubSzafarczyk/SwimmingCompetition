@@ -13,7 +13,6 @@ import lombok.*;
 @Table(name = "locations")
 public class Location {
 	@Id
-	@NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "location_id", nullable = false)
 	private Long locationId;

@@ -12,7 +12,6 @@ import lombok.*;
 @Table(name = "teams")
 public class Team {
 	@Id
-	@NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "team_id", nullable = false)
     private Long teamId;

@@ -14,7 +14,6 @@ import lombok.*;
 @Table(name = "competitors")
 public class Competitor {
 	@Id
-	@NotNull
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "competitor_id", nullable = false)
 	private Long competitorId;
