@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
-import com.polsl.dto.CoachDTO;
-import com.polsl.dto.CompetitorDTO;
-import com.polsl.dto.TeamDTO;
+import com.polsl.dto.CoachRequestDTO;
+import com.polsl.dto.CompetitorRequestDTO;
+import com.polsl.dto.TeamRequestDTO;
 import com.polsl.entity.Team;
 import com.polsl.repository.TeamRepository;
 
@@ -24,35 +24,35 @@ public class TeamController {
     private TeamRepository teamRepository;
 
     @GetMapping("/{id}/coaches")
-    public @ResponseBody CollectionModel<CoachDTO> getCoachesForTeam(@PathVariable Long id) {
+    public @ResponseBody CollectionModel<CoachRequestDTO> getCoachesForTeam(@PathVariable Long id) {
         Team team = teamRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Team not found with id " + id));
-        List<CoachDTO> coaches = team.getCoaches().stream()
-                .map(CoachDTO::new).collect(Collectors.toList());
+        List<CoachRequestDTO> coaches = team.getCoaches().stream()
+                .map(CoachRequestDTO::new).collect(Collectors.toList());
         return CollectionModel.of(coaches);
     }
 
     @GetMapping("/{id}/competitors")
-    public @ResponseBody CollectionModel<CompetitorDTO> getCompetitorsForTeam(@PathVariable Long id) {
+    public @ResponseBody CollectionModel<CompetitorRequestDTO> getCompetitorsForTeam(@PathVariable Long id) {
         Team team = teamRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Team not found with id " + id));
-        List<CompetitorDTO> competitors = team.getCompetitors().stream()
-                .map(CompetitorDTO::new).collect(Collectors.toList());
+        List<CompetitorRequestDTO> competitors = team.getCompetitors().stream()
+                .map(CompetitorRequestDTO::new).collect(Collectors.toList());
         return CollectionModel.of(competitors);
     }
 
     @GetMapping("/{id}")
-    public @ResponseBody TeamDTO getTeam(@PathVariable Long id) {
+    public @ResponseBody TeamRequestDTO getTeam(@PathVariable Long id) {
         Team team = teamRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Team not found with id " + id));
-        return new TeamDTO(team);
+        return new TeamRequestDTO(team);
     }
 
     @GetMapping
-    public @ResponseBody CollectionModel<TeamDTO> getAllTeams() {
-        List<TeamDTO> teamsDTO =
+    public @ResponseBody CollectionModel<TeamRequestDTO> getAllTeams() {
+        List<TeamRequestDTO> teamsDTO =
                 StreamSupport.stream(teamRepository.findAll().spliterator(), false)
-                        .map(TeamDTO::new).collect(Collectors.toList());
+                        .map(TeamRequestDTO::new).collect(Collectors.toList());
         return CollectionModel.of(teamsDTO);
     }
 

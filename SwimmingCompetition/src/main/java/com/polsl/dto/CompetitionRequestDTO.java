@@ -13,8 +13,8 @@ import java.sql.Timestamp;
 
 @Getter
 @Setter
-public class CompetitionDTO extends RepresentationModel<CompetitionDTO>{
-public CompetitionDTO(Competition competition){
+public class CompetitionRequestDTO extends RepresentationModel<CompetitionRequestDTO>{
+public CompetitionRequestDTO(Competition competition){
 	super();
 	this.competitionId = competition.getCompetitionId();
 	this.name = competition.getName();

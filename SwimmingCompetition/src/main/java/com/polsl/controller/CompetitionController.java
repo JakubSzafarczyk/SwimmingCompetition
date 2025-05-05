@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
-import com.polsl.dto.CompetitionDTO;
-import com.polsl.dto.CompetitorDTO;
-import com.polsl.dto.LocationDTO;
-import com.polsl.dto.RaceDTO;
+import com.polsl.dto.CompetitionRequestDTO;
+import com.polsl.dto.CompetitorRequestDTO;
+import com.polsl.dto.LocationRequestDTO;
+import com.polsl.dto.RaceRequestDTO;
 import com.polsl.entity.Competition;
 import com.polsl.repository.CompetitionRepository;
 
@@ -25,42 +25,42 @@ public class CompetitionController {
     private CompetitionRepository competitionRepository;
 
     @GetMapping("/{id}/location")
-    public @ResponseBody LocationDTO getLocationForCompetition(@PathVariable Long id) {
+    public @ResponseBody LocationRequestDTO getLocationForCompetition(@PathVariable Long id) {
     	Competition competition = competitionRepository.findById(id)
     			.orElseThrow(() -> new EntityNotFoundException("Competition not found with id " + id));
-    	return new LocationDTO(competition.getLocation());
+    	return new LocationRequestDTO(competition.getLocation());
     }
     
     @GetMapping("/{id}/races")
-    public @ResponseBody CollectionModel<RaceDTO> getRacesForCompetition(@PathVariable Long id) {
+    public @ResponseBody CollectionModel<RaceRequestDTO> getRacesForCompetition(@PathVariable Long id) {
     	Competition competition = competitionRepository.findById(id)
     			.orElseThrow(() -> new EntityNotFoundException("Competition not found with id " + id));
-    	List<RaceDTO> races = competition.getRaces().stream()
-    			.map(RaceDTO::new).collect(Collectors.toList());
+    	List<RaceRequestDTO> races = competition.getRaces().stream()
+    			.map(RaceRequestDTO::new).collect(Collectors.toList());
         return CollectionModel.of(races);
     }
     
     @GetMapping("/{id}/competitors")
-    public @ResponseBody CollectionModel<CompetitorDTO> getCompetitorsForCompetition(@PathVariable Long id) {
+    public @ResponseBody CollectionModel<CompetitorRequestDTO> getCompetitorsForCompetition(@PathVariable Long id) {
     	Competition competition = competitionRepository.findById(id)
     			.orElseThrow(() -> new EntityNotFoundException("Competition not found with id " + id));
-    	List<CompetitorDTO> competitor = competition.getCompetitors().stream()
-    			.map(CompetitorDTO::new).collect(Collectors.toList());
+    	List<CompetitorRequestDTO> competitor = competition.getCompetitors().stream()
+    			.map(CompetitorRequestDTO::new).collect(Collectors.toList());
         return CollectionModel.of(competitor);
     }
     
     @GetMapping("/{id}")
-    public @ResponseBody CompetitionDTO getCompetition(@PathVariable Long id) {
+    public @ResponseBody CompetitionRequestDTO getCompetition(@PathVariable Long id) {
     	Competition competition = competitionRepository.findById(id)
     			.orElseThrow(() -> new EntityNotFoundException("Competition not found with id " + id));
-    	return new CompetitionDTO(competition);
+    	return new CompetitionRequestDTO(competition);
     }
     
     @GetMapping
-    public @ResponseBody CollectionModel<CompetitionDTO> getAllCompetitions() {
-    	List<CompetitionDTO> competitionsDTO =
+    public @ResponseBody CollectionModel<CompetitionRequestDTO> getAllCompetitions() {
+    	List<CompetitionRequestDTO> competitionsDTO =
     			StreamSupport.stream(competitionRepository.findAll().spliterator(), false)
-    			.map(CompetitionDTO::new).collect(Collectors.toList());
+    			.map(CompetitionRequestDTO::new).collect(Collectors.toList());
     	return CollectionModel.of(competitionsDTO);
     }
     

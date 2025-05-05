@@ -15,8 +15,8 @@ import java.sql.Timestamp;
 
 @Getter
 @Setter
-public class RaceDTO extends RepresentationModel<RaceDTO>{
-public RaceDTO(Race race){
+public class RaceRequestDTO extends RepresentationModel<RaceRequestDTO>{
+public RaceRequestDTO(Race race){
 	super();
 	this.raceId = race.getRaceId();
 	this.style = race.getStyle();

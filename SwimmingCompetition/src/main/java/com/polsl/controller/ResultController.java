@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
-import com.polsl.dto.CompetitorDTO;
-import com.polsl.dto.RaceDTO;
-import com.polsl.dto.ResultDTO;
+import com.polsl.dto.CompetitorRequestDTO;
+import com.polsl.dto.RaceRequestDTO;
+import com.polsl.dto.ResultRequestDTO;
 import com.polsl.entity.Result;
 import com.polsl.repository.ResultRepository;
 
@@ -24,31 +24,31 @@ public class ResultController {
     private ResultRepository resultRepository;
 
     @GetMapping("/{id}/competitor")
-    public @ResponseBody CompetitorDTO getCompetitorForResult(@PathVariable Long id) {
+    public @ResponseBody CompetitorRequestDTO getCompetitorForResult(@PathVariable Long id) {
         Result result = resultRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Result not found with id " + id));
-        return new CompetitorDTO(result.getCompetitor());
+        return new CompetitorRequestDTO(result.getCompetitor());
     }
 
     @GetMapping("/{id}/race")
-    public @ResponseBody RaceDTO getRaceForResult(@PathVariable Long id) {
+    public @ResponseBody RaceRequestDTO getRaceForResult(@PathVariable Long id) {
         Result result = resultRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Result not found with id " + id));
-        return new RaceDTO(result.getRace());
+        return new RaceRequestDTO(result.getRace());
     }
 
     @GetMapping("/{id}")
-    public @ResponseBody ResultDTO getResult(@PathVariable Long id) {
+    public @ResponseBody ResultRequestDTO getResult(@PathVariable Long id) {
         Result result = resultRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Result not found with id " + id));
-        return new ResultDTO(result);
+        return new ResultRequestDTO(result);
     }
 
     @GetMapping
-    public @ResponseBody CollectionModel<ResultDTO> getAllResults() {
-        List<ResultDTO> resultsDTO =
+    public @ResponseBody CollectionModel<ResultRequestDTO> getAllResults() {
+        List<ResultRequestDTO> resultsDTO =
                 StreamSupport.stream(resultRepository.findAll().spliterator(), false)
-                        .map(ResultDTO::new).collect(Collectors.toList());
+                        .map(ResultRequestDTO::new).collect(Collectors.toList());
         return CollectionModel.of(resultsDTO);
     }
 

@@ -12,8 +12,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Getter
 @Setter
-public class TeamDTO extends RepresentationModel<TeamDTO>{
-public TeamDTO(Team team){
+public class TeamRequestDTO extends RepresentationModel<TeamRequestDTO>{
+public TeamRequestDTO(Team team){
 	super();
 	this.teamId = team.getTeamId();
 	this.name = team.getName();

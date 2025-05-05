@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
-import com.polsl.dto.CompetitionDTO;
-import com.polsl.dto.CompetitorDTO;
-import com.polsl.dto.ResultDTO;
-import com.polsl.dto.TeamDTO;
+import com.polsl.dto.CompetitionRequestDTO;
+import com.polsl.dto.CompetitorRequestDTO;
+import com.polsl.dto.ResultRequestDTO;
+import com.polsl.dto.TeamRequestDTO;
 import com.polsl.entity.Competitor;
 import com.polsl.repository.CompetitorRepository;
 
@@ -25,41 +25,41 @@ public class CompetitorController {
     private CompetitorRepository competitorRepository;
 
     @GetMapping("/{id}/team")
-    public @ResponseBody TeamDTO getTeamForCompetitor(@PathVariable Long id) {
+    public @ResponseBody TeamRequestDTO getTeamForCompetitor(@PathVariable Long id) {
     	Competitor competitor = competitorRepository.findById(id)
     			.orElseThrow(() -> new EntityNotFoundException("Competitor not found with id " + id));
-    	return new TeamDTO(competitor.getTeam());
+    	return new TeamRequestDTO(competitor.getTeam());
     }
     
     @GetMapping("/{id}/results")
-    public @ResponseBody CollectionModel<ResultDTO> getResultsForCompetitor(@PathVariable Long id) {
+    public @ResponseBody CollectionModel<ResultRequestDTO> getResultsForCompetitor(@PathVariable Long id) {
     	Competitor competitor = competitorRepository.findById(id)
     			.orElseThrow(() -> new EntityNotFoundException("Competitor not found with id " + id));
-    	List<ResultDTO> results = competitor.getResults().stream()
-    			.map(ResultDTO::new).collect(Collectors.toList());
+    	List<ResultRequestDTO> results = competitor.getResults().stream()
+    			.map(ResultRequestDTO::new).collect(Collectors.toList());
     	return CollectionModel.of(results);
     }
     
     @GetMapping("/{id}/competitions")
-    public @ResponseBody CollectionModel<CompetitionDTO> getCompetitionsForCompetitor(@PathVariable Long id) {
+    public @ResponseBody CollectionModel<CompetitionRequestDTO> getCompetitionsForCompetitor(@PathVariable Long id) {
     	Competitor competitor = competitorRepository.findById(id)
     			.orElseThrow(() -> new EntityNotFoundException("Competitor not found with id " + id));
-    	List<CompetitionDTO> competitions = competitor.getCompetitions().stream()
-    			.map(CompetitionDTO::new).collect(Collectors.toList());
+    	List<CompetitionRequestDTO> competitions = competitor.getCompetitions().stream()
+    			.map(CompetitionRequestDTO::new).collect(Collectors.toList());
     	return CollectionModel.of(competitions);
     }
  
     @GetMapping("/{id}")
-    public @ResponseBody CompetitorDTO getCompetitor(@PathVariable Long id) {
+    public @ResponseBody CompetitorRequestDTO getCompetitor(@PathVariable Long id) {
     	Competitor competitor = competitorRepository.findById(id)
     			.orElseThrow(() -> new EntityNotFoundException("Competitor not found with id " + id));
-    	return new CompetitorDTO(competitor);
+    	return new CompetitorRequestDTO(competitor);
     }
     @GetMapping
-    public @ResponseBody CollectionModel<CompetitorDTO> getAllCompetitors() {
-    	List<CompetitorDTO> competitorsDTO =
+    public @ResponseBody CollectionModel<CompetitorRequestDTO> getAllCompetitors() {
+    	List<CompetitorRequestDTO> competitorsDTO =
     			StreamSupport.stream(competitorRepository.findAll().spliterator(), false)
-    			.map(CompetitorDTO::new).collect(Collectors.toList());
+    			.map(CompetitorRequestDTO::new).collect(Collectors.toList());
     	return CollectionModel.of(competitorsDTO);
     }
     

@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
-import com.polsl.dto.CoachDTO;
-import com.polsl.dto.TeamDTO;
+import com.polsl.dto.CoachRequestDTO;
+import com.polsl.dto.TeamRequestDTO;
 import com.polsl.entity.Coach;
 import com.polsl.repository.CoachRepository;
 
@@ -23,24 +23,24 @@ public class CoachController {
     private CoachRepository coachRepository;
     
     @GetMapping("/{id}/team")
-    public @ResponseBody TeamDTO getTeamForCoach(@PathVariable Long id) {
+    public @ResponseBody TeamRequestDTO getTeamForCoach(@PathVariable Long id) {
     Coach coach = coachRepository.findById(id)
     		.orElseThrow(() -> new EntityNotFoundException("Coach not found with id " + id));
-    return new TeamDTO(coach.getTeam());
+    return new TeamRequestDTO(coach.getTeam());
     }
     
     @GetMapping("/{id}")
-    public @ResponseBody CoachDTO getCoach(@PathVariable Long id) {
+    public @ResponseBody CoachRequestDTO getCoach(@PathVariable Long id) {
     Coach coach = coachRepository.findById(id)
     		.orElseThrow(() -> new EntityNotFoundException("Coach not found with id " + id));
-    return new CoachDTO(coach);
+    return new CoachRequestDTO(coach);
     }
     
     @GetMapping
-    public @ResponseBody CollectionModel<CoachDTO> getAllCoaches() {
-    List<CoachDTO> coachsDTO =
+    public @ResponseBody CollectionModel<CoachRequestDTO> getAllCoaches() {
+    List<CoachRequestDTO> coachsDTO =
     StreamSupport.stream(coachRepository.findAll().spliterator(), false)
-    .map(CoachDTO::new).collect(Collectors.toList());
+    .map(CoachRequestDTO::new).collect(Collectors.toList());
     return CollectionModel.of(coachsDTO);
     }
     

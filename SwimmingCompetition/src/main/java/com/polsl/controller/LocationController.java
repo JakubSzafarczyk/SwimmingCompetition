@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
-import com.polsl.dto.CompetitionDTO;
-import com.polsl.dto.LocationDTO;
+import com.polsl.dto.CompetitionRequestDTO;
+import com.polsl.dto.LocationRequestDTO;
 import com.polsl.entity.Location;
 import com.polsl.repository.LocationRepository;
 
@@ -23,26 +23,26 @@ public class LocationController {
     private LocationRepository locationRepository;
 
     @GetMapping("/{id}/competitions")
-    public @ResponseBody CollectionModel<CompetitionDTO> getCompetitionsForLocation(@PathVariable Long id) {
+    public @ResponseBody CollectionModel<CompetitionRequestDTO> getCompetitionsForLocation(@PathVariable Long id) {
         Location location = locationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Location not found with id " + id));
-        List<CompetitionDTO> competitions = location.getCompetitions().stream()
-                .map(CompetitionDTO::new).collect(Collectors.toList());
+        List<CompetitionRequestDTO> competitions = location.getCompetitions().stream()
+                .map(CompetitionRequestDTO::new).collect(Collectors.toList());
         return CollectionModel.of(competitions);
     }
 
     @GetMapping("/{id}")
-    public @ResponseBody LocationDTO getLocation(@PathVariable Long id) {
+    public @ResponseBody LocationRequestDTO getLocation(@PathVariable Long id) {
         Location location = locationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Location not found with id " + id));
-        return new LocationDTO(location);
+        return new LocationRequestDTO(location);
     }
 
     @GetMapping
-    public @ResponseBody CollectionModel<LocationDTO> getAllLocations() {
-        List<LocationDTO> locationsDTO =
+    public @ResponseBody CollectionModel<LocationRequestDTO> getAllLocations() {
+        List<LocationRequestDTO> locationsDTO =
                 StreamSupport.stream(locationRepository.findAll().spliterator(), false)
-                        .map(LocationDTO::new).collect(Collectors.toList());
+                        .map(LocationRequestDTO::new).collect(Collectors.toList());
         return CollectionModel.of(locationsDTO);
     }
 

@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
-import com.polsl.dto.CompetitionDTO;
-import com.polsl.dto.RaceDTO;
-import com.polsl.dto.ResultDTO;
+import com.polsl.dto.CompetitionRequestDTO;
+import com.polsl.dto.RaceRequestDTO;
+import com.polsl.dto.ResultRequestDTO;
 import com.polsl.entity.Race;
 import com.polsl.repository.RaceRepository;
 
@@ -24,33 +24,33 @@ public class RaceController {
     private RaceRepository raceRepository;
 
     @GetMapping("/{id}/results")
-    public @ResponseBody CollectionModel<ResultDTO> getResultsForRace(@PathVariable Long id) {
+    public @ResponseBody CollectionModel<ResultRequestDTO> getResultsForRace(@PathVariable Long id) {
         Race race = raceRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Race not found with id " + id));
-        List<ResultDTO> results = race.getResults().stream()
-                .map(ResultDTO::new).collect(Collectors.toList());
+        List<ResultRequestDTO> results = race.getResults().stream()
+                .map(ResultRequestDTO::new).collect(Collectors.toList());
         return CollectionModel.of(results);
     }
 
     @GetMapping("/{id}/competition")
-    public @ResponseBody CompetitionDTO getCompetitionForRace(@PathVariable Long id) {
+    public @ResponseBody CompetitionRequestDTO getCompetitionForRace(@PathVariable Long id) {
         Race race = raceRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Race not found with id " + id));
-        return new CompetitionDTO(race.getCompetition());
+        return new CompetitionRequestDTO(race.getCompetition());
     }
 
     @GetMapping("/{id}")
-    public @ResponseBody RaceDTO getRace(@PathVariable Long id) {
+    public @ResponseBody RaceRequestDTO getRace(@PathVariable Long id) {
         Race race = raceRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Race not found with id " + id));
-        return new RaceDTO(race);
+        return new RaceRequestDTO(race);
     }
 
     @GetMapping
-    public @ResponseBody CollectionModel<RaceDTO> getAllRaces() {
-        List<RaceDTO> racesDTO =
+    public @ResponseBody CollectionModel<RaceRequestDTO> getAllRaces() {
+        List<RaceRequestDTO> racesDTO =
                 StreamSupport.stream(raceRepository.findAll().spliterator(), false)
-                        .map(RaceDTO::new).collect(Collectors.toList());
+                        .map(RaceRequestDTO::new).collect(Collectors.toList());
         return CollectionModel.of(racesDTO);
     }
 
