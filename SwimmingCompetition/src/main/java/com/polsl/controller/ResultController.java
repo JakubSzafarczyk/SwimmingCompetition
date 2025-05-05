@@ -10,8 +10,13 @@ import org.springframework.web.bind.annotation.*;
 
 import com.polsl.dto.CompetitorRequestDTO;
 import com.polsl.dto.RaceRequestDTO;
+import com.polsl.dto.ResultDTO;
 import com.polsl.dto.ResultRequestDTO;
+import com.polsl.entity.Competitor;
+import com.polsl.entity.Race;
 import com.polsl.entity.Result;
+import com.polsl.repository.CompetitorRepository;
+import com.polsl.repository.RaceRepository;
 import com.polsl.repository.ResultRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -22,6 +27,12 @@ public class ResultController {
 
     @Autowired
     private ResultRepository resultRepository;
+    
+    @Autowired
+    private CompetitorRepository competitorRepository;
+    
+    @Autowired
+    private RaceRepository raceRepository;
 
     @GetMapping("/{id}/competitor")
     public @ResponseBody CompetitorRequestDTO getCompetitorForResult(@PathVariable Long id) {
@@ -53,19 +64,45 @@ public class ResultController {
     }
 
     @PostMapping
-    public Result create(@RequestBody Result result) {
-        return resultRepository.save(result);
+    public ResultRequestDTO create(@RequestBody ResultDTO dto) {
+    	Result result = new Result();
+    	result.setPlace(dto.getPlace());
+    	result.setTime(dto.getTime());
+        
+        if (dto.getCompetitorId() != null) {
+        	Competitor competitor = competitorRepository.findById(dto.getCompetitorId())
+                    .orElseThrow(() -> new EntityNotFoundException("Competitor not found with id: " + dto.getCompetitorId()));
+            result.setCompetitor(competitor);
+        }
+        
+        if (dto.getRaceId() != null) {
+        	Race race = raceRepository.findById(dto.getRaceId())
+                    .orElseThrow(() -> new EntityNotFoundException("Race not found with id: " + dto.getRaceId()));
+            result.setRace(race);
+        }
+
+        Result saved = resultRepository.save(result);
+        return new ResultRequestDTO(saved);
     }
 
     @PutMapping("/{id}")
-    public Result update(@PathVariable Long id, @RequestBody Result resultDetails) {
-        Result result = resultRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Result not found with id " + id));
-        result.setPlace(resultDetails.getPlace());
-        result.setTime(resultDetails.getTime());
-        result.setCompetitor(resultDetails.getCompetitor());
-        result.setRace(resultDetails.getRace());
-        return resultRepository.save(result);
+    public ResultRequestDTO update(@PathVariable Long id, @RequestBody ResultDTO dto) {
+    	Result result = resultRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Result not found with id: " + id));
+
+    	Competitor competitor = competitorRepository.findById(dto.getCompetitorId())
+                .orElseThrow(() -> new EntityNotFoundException("Competitor not found with id: " + dto.getCompetitorId()));
+        
+    	Race race = raceRepository.findById(dto.getRaceId())
+                .orElseThrow(() -> new EntityNotFoundException("Race not found with id: " + dto.getRaceId()));
+        
+    	result.setPlace(dto.getPlace());
+    	result.setTime(dto.getTime());
+    	result.setCompetitor(competitor);
+    	result.setRace(race);
+
+    	Result updated = resultRepository.save(result);
+        return new ResultRequestDTO(updated);
     }
 
     @DeleteMapping("/{id}")

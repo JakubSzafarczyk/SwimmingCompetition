@@ -1,6 +1,7 @@
 package com.polsl.controller;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -10,8 +11,13 @@ import org.springframework.web.bind.annotation.*;
 
 import com.polsl.dto.CoachRequestDTO;
 import com.polsl.dto.CompetitorRequestDTO;
+import com.polsl.dto.TeamDTO;
 import com.polsl.dto.TeamRequestDTO;
+import com.polsl.entity.Coach;
+import com.polsl.entity.Competitor;
 import com.polsl.entity.Team;
+import com.polsl.repository.CoachRepository;
+import com.polsl.repository.CompetitorRepository;
 import com.polsl.repository.TeamRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -22,6 +28,12 @@ public class TeamController {
 
     @Autowired
     private TeamRepository teamRepository;
+    
+    @Autowired
+    private CoachRepository coachRepository;
+    
+    @Autowired
+    private CompetitorRepository competitorRepository;
 
     @GetMapping("/{id}/coaches")
     public @ResponseBody CollectionModel<CoachRequestDTO> getCoachesForTeam(@PathVariable Long id) {
@@ -57,17 +69,53 @@ public class TeamController {
     }
 
     @PostMapping
-    public Team create(@RequestBody Team team) {
-        return teamRepository.save(team);
+    public TeamRequestDTO create(@RequestBody TeamDTO dto) {
+    	Team team = new Team();
+    	team.setName(dto.getName());
+    	team.setHeadquarters(dto.getHeadquarters());
+
+        if (dto.getCoachId() != null) {
+            Set<Coach> coaches = dto.getCoachId().stream()
+                    .map(id -> coachRepository.findById(id)
+                            .orElseThrow(() -> new EntityNotFoundException("Coach not found with id: " + id)))
+                    .collect(Collectors.toSet());
+            team.setCoaches(coaches);
+        }
+        
+        if (dto.getCompetitorId() != null) {
+            Set<Competitor> competitors = dto.getCompetitorId().stream()
+                    .map(id -> competitorRepository.findById(id)
+                            .orElseThrow(() -> new EntityNotFoundException("Competitor not found with id: " + id)))
+                    .collect(Collectors.toSet());
+            team.setCompetitors(competitors);
+        }
+
+        Team saved = teamRepository.save(team);
+        return new TeamRequestDTO(saved);
     }
 
     @PutMapping("/{id}")
-    public Team update(@PathVariable Long id, @RequestBody Team teamDetails) {
-        Team team = teamRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Team not found with id " + id));
-        team.setName(teamDetails.getName());
-        team.setHeadquarters(teamDetails.getHeadquarters());
-        return teamRepository.save(team);
+    public TeamRequestDTO update(@PathVariable Long id, @RequestBody TeamDTO dto) {
+    	Team team = teamRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Team not found with id: " + id));
+
+    	Set<Coach> coaches = dto.getCoachId().stream()
+                .map(coachIds -> coachRepository.findById(id)
+                        .orElseThrow(() -> new EntityNotFoundException("Coach not found with id: " + id)))
+                .collect(Collectors.toSet());
+    	
+    	Set<Competitor> competitors = dto.getCompetitorId().stream()
+                .map(competitorIds -> competitorRepository.findById(id)
+                        .orElseThrow(() -> new EntityNotFoundException("Competitor not found with id: " + id)))
+                .collect(Collectors.toSet());
+    	 
+    	team.setName(dto.getName());
+    	team.setHeadquarters(dto.getHeadquarters());
+    	team.setCoaches(coaches);
+    	team.setCompetitors(competitors);
+
+    	Team updated = teamRepository.save(team);
+        return new TeamRequestDTO(updated);
     }
 
     @DeleteMapping("/{id}")
