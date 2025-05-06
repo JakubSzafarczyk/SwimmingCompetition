@@ -98,16 +98,16 @@ public class CompetitorController {
 
         if (dto.getResultIds() != null) {
             Set<Result> results = dto.getResultIds().stream()
-                    .map(id -> resultRepository.findById(id)
-                            .orElseThrow(() -> new EntityNotFoundException("Result not found with id: " + id)))
+                    .map(resultId -> resultRepository.findById(resultId)
+                            .orElseThrow(() -> new EntityNotFoundException("Result not found with id: " + resultId)))
                     .collect(Collectors.toSet());
             competitor.setResults(results);
         }
 
         if (dto.getCompetitionIds() != null) {
             Set<Competition> competitions = dto.getCompetitionIds().stream()
-                    .map(id -> competitionRepository.findById(id)
-                            .orElseThrow(() -> new EntityNotFoundException("Competition not found with id: " + id)))
+                    .map(competitionId -> competitionRepository.findById(competitionId)
+                            .orElseThrow(() -> new EntityNotFoundException("Competition not found with id: " + competitionId)))
                     .collect(Collectors.toSet());
             competitor.setCompetitions(competitions);
         }

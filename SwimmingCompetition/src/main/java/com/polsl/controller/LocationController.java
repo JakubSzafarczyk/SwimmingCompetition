@@ -63,8 +63,8 @@ public class LocationController {
 
         if (dto.getCompetitionId() != null) {
             Set<Competition> competitions = dto.getCompetitionId().stream()
-                    .map(id -> competitionRepository.findById(id)
-                            .orElseThrow(() -> new EntityNotFoundException("Competition not found with id: " + id)))
+                    .map(competitionId -> competitionRepository.findById(competitionId)
+                            .orElseThrow(() -> new EntityNotFoundException("Competition not found with id: " + competitionId)))
                     .collect(Collectors.toSet());
             location.setCompetitions(competitions);
         }
@@ -79,8 +79,8 @@ public class LocationController {
             .orElseThrow(() -> new EntityNotFoundException("Location not found with id: " + id));
 
     	Set<Competition> competitions = dto.getCompetitionId().stream()
-                .map(competitionId -> competitionRepository.findById(id)
-                        .orElseThrow(() -> new EntityNotFoundException("Competition not found with id: " + id)))
+                .map(competitionId -> competitionRepository.findById(competitionId)
+                        .orElseThrow(() -> new EntityNotFoundException("Competition not found with id: " + competitionId)))
                 .collect(Collectors.toSet());
 
     	location.setName(dto.getName());

@@ -75,8 +75,8 @@ public class RaceController {
 
         if (dto.getResultIds() != null) {
             Set<Result> results = dto.getResultIds().stream()
-                    .map(id -> reslutRepository.findById(id)
-                            .orElseThrow(() -> new EntityNotFoundException("Result not found with id: " + id)))
+                    .map(resultId -> reslutRepository.findById(resultId)
+                            .orElseThrow(() -> new EntityNotFoundException("Result not found with id: " + resultId)))
                     .collect(Collectors.toSet());
             race.setResults(results);
         }
@@ -97,8 +97,8 @@ public class RaceController {
             .orElseThrow(() -> new EntityNotFoundException("Race not found with id: " + id));
 
     	Set<Result> results = dto.getResultIds().stream()
-                .map(resultId -> reslutRepository.findById(id)
-                        .orElseThrow(() -> new EntityNotFoundException("Result not found with id: " + id)))
+                .map(resultId -> reslutRepository.findById(resultId)
+                        .orElseThrow(() -> new EntityNotFoundException("Result not found with id: " + resultId)))
                 .collect(Collectors.toSet());
 
     	Competition competition = competitionRepository.findById(dto.getCompetitionId())

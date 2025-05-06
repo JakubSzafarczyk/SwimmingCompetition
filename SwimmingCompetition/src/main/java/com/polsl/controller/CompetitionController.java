@@ -97,16 +97,16 @@ public class CompetitionController {
         
         if (dto.getRaceIds() != null) {
         	Set<Race> races = dto.getRaceIds().stream()
-            	    .map(id -> raceRepository.findById(id)
-            	        .orElseThrow(() -> new EntityNotFoundException("Race not found with id: " + id)))
+            	    .map(raceIds -> raceRepository.findById(raceIds)
+            	        .orElseThrow(() -> new EntityNotFoundException("Race not found with id: " + raceIds)))
             	    .collect(Collectors.toSet());
         	competition.setRaces(races);
         }
         
         if (dto.getCompetitorIds() != null) {
         	Set<Competitor> competitors = dto.getCompetitorIds().stream()
-            	    .map(id -> competitorRepository.findById(id)
-            	        .orElseThrow(() -> new EntityNotFoundException("Competitor not found with id: " + id)))
+            	    .map(competitorIds -> competitorRepository.findById(competitorIds)
+            	        .orElseThrow(() -> new EntityNotFoundException("Competitor not found with id: " + competitorIds)))
             	    .collect(Collectors.toSet());
         	competition.setCompetitors(competitors);
         }
@@ -124,13 +124,13 @@ public class CompetitionController {
                 .orElseThrow(() -> new EntityNotFoundException("Location not found"));
         
     	Set<Race> races = dto.getRaceIds().stream()
-        	    .map(ids -> raceRepository.findById(id)
-        	        .orElseThrow(() -> new EntityNotFoundException("Race not found with id: " + id)))
+        	    .map(raceIds -> raceRepository.findById(raceIds)
+        	        .orElseThrow(() -> new EntityNotFoundException("Race not found with id: " + raceIds)))
         	    .collect(Collectors.toSet());
 
     	Set<Competitor> competitors = dto.getCompetitorIds().stream()
-    	    .map(ids -> competitorRepository.findById(id)
-    	        .orElseThrow(() -> new EntityNotFoundException("Competitor not found with id: " + id)))
+    	    .map(competitorIds -> competitorRepository.findById(competitorIds)
+    	        .orElseThrow(() -> new EntityNotFoundException("Competitor not found with id: " + competitorIds)))
     	    .collect(Collectors.toSet());
         	
     	competition.setName(dto.getName());
