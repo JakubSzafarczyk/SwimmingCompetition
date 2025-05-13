@@ -15,8 +15,8 @@ import java.sql.Date;
 
 @Getter
 @Setter
-public class CoachRequestDTO extends RepresentationModel<CoachRequestDTO>{
-public CoachRequestDTO(Coach coach){
+public class CoachGetDTO extends RepresentationModel<CoachGetDTO>{
+public CoachGetDTO(Coach coach){
 	super();
 	this.coachId = coach.getCoachId();
 	this.firstName = coach.getFirstName();

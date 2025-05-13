@@ -9,15 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
-import com.polsl.dto.CompetitionRequestDTO;
-import com.polsl.dto.LocationDTO;
-import com.polsl.dto.LocationRequestDTO;
+import com.polsl.dto.CompetitionGetDTO;
+import com.polsl.dto.LocationPostDTO;
+import com.polsl.dto.LocationPutDTO;
+import com.polsl.dto.LocationGetDTO;
 import com.polsl.entity.Competition;
 import com.polsl.entity.Location;
 import com.polsl.repository.CompetitionRepository;
 import com.polsl.repository.LocationRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/locations")
@@ -30,36 +32,39 @@ public class LocationController {
     private CompetitionRepository competitionRepository;
 
     @GetMapping("/{id}/competitions")
-    public @ResponseBody CollectionModel<CompetitionRequestDTO> getCompetitionsForLocation(@PathVariable Long id) {
+    public @ResponseBody CollectionModel<CompetitionGetDTO> getCompetitionsForLocation(@PathVariable Long id) {
         Location location = locationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Location not found with id " + id));
-        List<CompetitionRequestDTO> competitions = location.getCompetitions().stream()
-                .map(CompetitionRequestDTO::new).collect(Collectors.toList());
+        List<CompetitionGetDTO> competitions = location.getCompetitions().stream()
+                .map(CompetitionGetDTO::new).collect(Collectors.toList());
         return CollectionModel.of(competitions);
     }
 
     @GetMapping("/{id}")
-    public @ResponseBody LocationRequestDTO getLocation(@PathVariable Long id) {
+    public @ResponseBody LocationGetDTO getLocation(@PathVariable Long id) {
         Location location = locationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Location not found with id " + id));
-        return new LocationRequestDTO(location);
+        return new LocationGetDTO(location);
     }
 
     @GetMapping
-    public @ResponseBody CollectionModel<LocationRequestDTO> getAllLocations() {
-        List<LocationRequestDTO> locationsDTO =
+    public @ResponseBody CollectionModel<LocationGetDTO> getAllLocations() {
+        List<LocationGetDTO> locationsDTO =
                 StreamSupport.stream(locationRepository.findAll().spliterator(), false)
-                        .map(LocationRequestDTO::new).collect(Collectors.toList());
+                        .map(LocationGetDTO::new).collect(Collectors.toList());
         return CollectionModel.of(locationsDTO);
     }
 
     @PostMapping
-    public LocationRequestDTO create(@RequestBody LocationDTO dto) {
+    public LocationGetDTO create(@Valid @RequestBody LocationPostDTO dto) {
     	Location location = new Location();
     	location.setName(dto.getName());
     	location.setAddress(dto.getAddress());
     	location.setPoolLength(dto.getPoolLength());
+    	
+    	if (dto.getCapacity() != null) {
     	location.setCapacity(dto.getCapacity());
+    	}
 
         if (dto.getCompetitionId() != null) {
             Set<Competition> competitions = dto.getCompetitionId().stream()
@@ -70,11 +75,11 @@ public class LocationController {
         }
 
         Location saved = locationRepository.save(location);
-        return new LocationRequestDTO(saved);
+        return new LocationGetDTO(saved);
     }
 
     @PutMapping("/{id}")
-    public LocationRequestDTO update(@PathVariable Long id, @RequestBody LocationDTO dto) {
+    public LocationGetDTO update(@PathVariable Long id,@Valid @RequestBody LocationPutDTO dto) {
     	Location location = locationRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Location not found with id: " + id));
 
@@ -90,7 +95,7 @@ public class LocationController {
         location.setCompetitions(competitions);
 
         Location updated = locationRepository.save(location);
-        return new LocationRequestDTO(updated);
+        return new LocationGetDTO(updated);
     }
     
     @DeleteMapping("/{id}")

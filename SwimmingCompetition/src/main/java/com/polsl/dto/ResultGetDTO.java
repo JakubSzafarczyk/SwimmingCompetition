@@ -14,8 +14,8 @@ import java.sql.Time;
 
 @Getter
 @Setter
-public class ResultRequestDTO extends RepresentationModel<ResultRequestDTO>{
-public ResultRequestDTO(Result result){
+public class ResultGetDTO extends RepresentationModel<ResultGetDTO>{
+public ResultGetDTO(Result result){
 	super();
 	this.resultId = result.getResultId();
 	this.place = result.getPlace();

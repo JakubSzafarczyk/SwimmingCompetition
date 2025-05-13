@@ -15,8 +15,8 @@ import java.sql.Date;
 
 @Getter
 @Setter
-public class CompetitorRequestDTO extends RepresentationModel<CompetitorRequestDTO>{
-public CompetitorRequestDTO(Competitor competitor){
+public class CompetitorGetDTO extends RepresentationModel<CompetitorGetDTO>{
+public CompetitorGetDTO(Competitor competitor){
 	super();
 	this.competitorId = competitor.getCompetitorId();
 	this.firstName = competitor.getFirstName();

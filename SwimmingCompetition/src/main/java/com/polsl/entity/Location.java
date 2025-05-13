@@ -27,10 +27,10 @@ public class Location {
 	
 	@NotNull
 	@Column(name = "pool_length", nullable = false)
-	private int poolLength;
+	private Integer poolLength;
 	
 	@Column(name = "capacity")
-	private int capacity;
+	private Integer capacity;
 	
 	@OneToMany(mappedBy = "location", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Set<Competition> competitions = new HashSet<Competition>();

@@ -8,15 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
-import com.polsl.dto.CoachDTO;
-import com.polsl.dto.CoachRequestDTO;
-import com.polsl.dto.TeamRequestDTO;
+import com.polsl.dto.CoachPostDTO;
+import com.polsl.dto.CoachPutDTO;
+import com.polsl.dto.CoachGetDTO;
+import com.polsl.dto.TeamGetDTO;
 import com.polsl.entity.Coach;
 import com.polsl.entity.Team;
 import com.polsl.repository.CoachRepository;
 import com.polsl.repository.TeamRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/coaches")
@@ -29,29 +31,29 @@ public class CoachController {
     private TeamRepository teamRepository;
     
     @GetMapping("/{id}/team")
-    public @ResponseBody TeamRequestDTO getTeamForCoach(@PathVariable Long id) {
+    public @ResponseBody TeamGetDTO getTeamForCoach(@PathVariable Long id) {
 	    Coach coach = coachRepository.findById(id)
 	    		.orElseThrow(() -> new EntityNotFoundException("Coach not found with id " + id));
-	    return new TeamRequestDTO(coach.getTeam());
+	    return new TeamGetDTO(coach.getTeam());
     }
     
     @GetMapping("/{id}")
-    public @ResponseBody CoachRequestDTO getCoach(@PathVariable Long id) {
+    public @ResponseBody CoachGetDTO getCoach(@PathVariable Long id) {
     	Coach coach = coachRepository.findById(id)
     			.orElseThrow(() -> new EntityNotFoundException("Coach not found with id " + id));
-    	return new CoachRequestDTO(coach);
+    	return new CoachGetDTO(coach);
     }
     
     @GetMapping
-    public @ResponseBody CollectionModel<CoachRequestDTO> getAllCoaches() {
-    	List<CoachRequestDTO> coachsDTO =
+    public @ResponseBody CollectionModel<CoachGetDTO> getAllCoaches() {
+    	List<CoachGetDTO> coachsDTO =
     			StreamSupport.stream(coachRepository.findAll().spliterator(), false)
-    			.map(CoachRequestDTO::new).collect(Collectors.toList());
+    			.map(CoachGetDTO::new).collect(Collectors.toList());
     	return CollectionModel.of(coachsDTO);
     }
     
     @PostMapping
-    public CoachRequestDTO create(@RequestBody CoachDTO dto) {
+    public CoachGetDTO create(@Valid @RequestBody CoachPostDTO dto) {
         Coach coach = new Coach();
         coach.setFirstName(dto.getFirstName());
         coach.setSecondName(dto.getSecondName());
@@ -67,11 +69,11 @@ public class CoachController {
         }
 
         Coach saved = coachRepository.save(coach);
-        return new CoachRequestDTO(saved);
+        return new CoachGetDTO(saved);
     }
     
     @PutMapping("/{id}")
-    public CoachRequestDTO update(@PathVariable Long id, @RequestBody CoachDTO dto) {
+    public CoachGetDTO update(@PathVariable Long id, @Valid @RequestBody CoachPutDTO dto) {
         Coach coach = coachRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Coach not found"));
 
@@ -87,7 +89,7 @@ public class CoachController {
         coach.setTeam(team);
 
         Coach updated = coachRepository.save(coach);
-        return new CoachRequestDTO(updated);
+        return new CoachGetDTO(updated);
     }
     
     @DeleteMapping("/{id}")

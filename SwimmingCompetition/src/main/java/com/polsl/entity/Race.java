@@ -26,7 +26,7 @@ public class Race {
 
 	@NotNull
     @Column(name = "distance", nullable = false)
-    private int distance;
+    private Integer distance;
     
 	@NotNull
     @Column(name = "race_date", nullable = false)

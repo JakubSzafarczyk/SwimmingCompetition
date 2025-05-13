@@ -12,8 +12,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Getter
 @Setter
-public class LocationRequestDTO extends RepresentationModel<LocationRequestDTO>{
-public LocationRequestDTO(Location location){
+public class LocationGetDTO extends RepresentationModel<LocationGetDTO>{
+public LocationGetDTO(Location location){
 	super();
 	this.locationId = location.getLocationId();
 	this.name = location.getName();
@@ -28,6 +28,6 @@ public LocationRequestDTO(Location location){
 private Long locationId;
 private String name;
 private String address;
-private int poolLength;
-private int capacity;
+private Integer poolLength;
+private Integer capacity;
 }

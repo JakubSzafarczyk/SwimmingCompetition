@@ -9,10 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
-import com.polsl.dto.CompetitionRequestDTO;
-import com.polsl.dto.RaceDTO;
-import com.polsl.dto.RaceRequestDTO;
-import com.polsl.dto.ResultRequestDTO;
+import com.polsl.dto.CompetitionGetDTO;
+import com.polsl.dto.RacePostDTO;
+import com.polsl.dto.RacePutDTO;
+import com.polsl.dto.RaceGetDTO;
+import com.polsl.dto.ResultGetDTO;
 import com.polsl.entity.Competition;
 import com.polsl.entity.Race;
 import com.polsl.entity.Result;
@@ -21,6 +22,7 @@ import com.polsl.repository.RaceRepository;
 import com.polsl.repository.ResultRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/races")
@@ -36,38 +38,38 @@ public class RaceController {
     private CompetitionRepository competitionRepository;
 
     @GetMapping("/{id}/results")
-    public @ResponseBody CollectionModel<ResultRequestDTO> getResultsForRace(@PathVariable Long id) {
+    public @ResponseBody CollectionModel<ResultGetDTO> getResultsForRace(@PathVariable Long id) {
         Race race = raceRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Race not found with id " + id));
-        List<ResultRequestDTO> results = race.getResults().stream()
-                .map(ResultRequestDTO::new).collect(Collectors.toList());
+        List<ResultGetDTO> results = race.getResults().stream()
+                .map(ResultGetDTO::new).collect(Collectors.toList());
         return CollectionModel.of(results);
     }
 
     @GetMapping("/{id}/competition")
-    public @ResponseBody CompetitionRequestDTO getCompetitionForRace(@PathVariable Long id) {
+    public @ResponseBody CompetitionGetDTO getCompetitionForRace(@PathVariable Long id) {
         Race race = raceRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Race not found with id " + id));
-        return new CompetitionRequestDTO(race.getCompetition());
+        return new CompetitionGetDTO(race.getCompetition());
     }
 
     @GetMapping("/{id}")
-    public @ResponseBody RaceRequestDTO getRace(@PathVariable Long id) {
+    public @ResponseBody RaceGetDTO getRace(@PathVariable Long id) {
         Race race = raceRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Race not found with id " + id));
-        return new RaceRequestDTO(race);
+        return new RaceGetDTO(race);
     }
 
     @GetMapping
-    public @ResponseBody CollectionModel<RaceRequestDTO> getAllRaces() {
-        List<RaceRequestDTO> racesDTO =
+    public @ResponseBody CollectionModel<RaceGetDTO> getAllRaces() {
+        List<RaceGetDTO> racesDTO =
                 StreamSupport.stream(raceRepository.findAll().spliterator(), false)
-                        .map(RaceRequestDTO::new).collect(Collectors.toList());
+                        .map(RaceGetDTO::new).collect(Collectors.toList());
         return CollectionModel.of(racesDTO);
     }
 
     @PostMapping
-    public RaceRequestDTO create(@RequestBody RaceDTO dto) {
+    public RaceGetDTO create(@Valid @RequestBody RacePostDTO dto) {
     	Race race = new Race();
     	race.setStyle(dto.getStyle());
     	race.setDistance(dto.getDistance());
@@ -88,11 +90,11 @@ public class RaceController {
         }
 
         Race saved = raceRepository.save(race);
-        return new RaceRequestDTO(saved);
+        return new RaceGetDTO(saved);
     }
 
     @PutMapping("/{id}")
-    public RaceRequestDTO update(@PathVariable Long id, @RequestBody RaceDTO dto) {
+    public RaceGetDTO update(@PathVariable Long id,@Valid @RequestBody RacePutDTO dto) {
     	Race race = raceRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Race not found with id: " + id));
 
@@ -111,7 +113,7 @@ public class RaceController {
     	race.setCompetition(competition);
 
     	Race updated = raceRepository.save(race);
-        return new RaceRequestDTO(updated);
+        return new RaceGetDTO(updated);
     }
     
     @DeleteMapping("/{id}")
